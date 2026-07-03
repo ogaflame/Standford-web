@@ -1,181 +1,276 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#172b4d" />
-  <meta name="description" content="Standford 店舗ツール" />
-  <title>Standford</title>
-  <style>
-    :root {
-      --ink: #f8fbff;
-      --bg-left: #101c38;
-      --bg-center: #163b73;
-      --bg-right: #506076;
-      --line: rgba(248, 251, 255, 0.72);
-      --focus: #9cecff;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#0a1730" />
+<meta name="description" content="Standford 店舗ツール" />
+<title>Standford</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #f4f8ff;
+    --ink-dim: rgba(244, 248, 255, 0.60);
+    --ink-faint: rgba(244, 248, 255, 0.36);
+    --bg-0: #08122a;
+    --bg-1: #16295c;
+    --bg-2: #4c5e7f;
+    --line: rgba(244, 248, 255, 0.16);
+    --line-strong: rgba(244, 248, 255, 0.34);
+    --accent: #8febff;
+    --accent-dim: rgba(143, 235, 255, 0.28);
+    --font-display: 'VT323', monospace;
+    --font-body: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+  }
 
-    * { box-sizing: border-box; }
-    html { min-height: 100%; }
+  * { box-sizing: border-box; }
+  html { min-height: 100%; }
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 18% 46%, rgba(13, 41, 100, 0.80) 0%, rgba(13, 41, 100, 0) 39%),
-        radial-gradient(circle at 85% 20%, rgba(139, 153, 170, 0.13) 0%, rgba(139, 153, 170, 0) 42%),
-        linear-gradient(112deg, var(--bg-left) 0%, var(--bg-center) 57%, var(--bg-right) 100%);
-      overflow-x: hidden;
-    }
+  body {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--font-body);
+    background:
+      radial-gradient(circle at 16% 42%, rgba(76, 130, 220, 0.16) 0%, rgba(76, 130, 220, 0) 40%),
+      radial-gradient(circle at 88% 16%, rgba(143, 235, 255, 0.08) 0%, rgba(143, 235, 255, 0) 42%),
+      linear-gradient(118deg, var(--bg-0) 0%, var(--bg-1) 56%, var(--bg-2) 100%);
+    overflow-x: hidden;
+    position: relative;
+  }
 
-    .page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-rows: 1fr auto;
-      padding: clamp(28px, 6vw, 88px) clamp(24px, 7vw, 112px) clamp(34px, 6vw, 76px);
-      isolation: isolate;
-    }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(244, 248, 255, 0.025) 0px,
+      rgba(244, 248, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
 
-    .hero {
-      display: grid;
-      place-items: center;
-      align-content: center;
-      min-height: min(62vh, 610px);
-    }
+  .sweep {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 40vh;
+    background: linear-gradient(to bottom, rgba(143, 235, 255, 0.10), transparent);
+    pointer-events: none;
+    z-index: 2;
+    animation: sweep-down 1100ms steps(24, end) 1;
+  }
 
-    .title-wrap {
-      width: min(100%, 1250px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+  @keyframes sweep-down {
+    from { transform: translateY(-40vh); opacity: 1; }
+    to { transform: translateY(150vh); opacity: 0; }
+  }
 
-    .title-image {
-      display: block;
-      width: min(100%, 947px);
-      height: auto;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08));
-    }
+  .page {
+    position: relative;
+    z-index: 3;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    padding: clamp(28px, 6vw, 88px) clamp(24px, 7vw, 112px) clamp(28px, 5vw, 56px);
+  }
 
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
+  .hero {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    min-height: min(40vh, 400px);
+  }
 
-    .tool-nav {
-      width: min(100%, 1250px);
-      justify-self: center;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      align-items: center;
-      gap: clamp(16px, 3vw, 52px);
-      padding-top: 24px;
-    }
+  .title-wrap {
+    width: min(100%, 1250px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-    .tool-link {
-      position: relative;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 2.5em;
-      text-decoration: none;
-      transition: transform 120ms steps(2, end);
-      outline: none;
-    }
+  .title-image {
+    display: block;
+    width: min(100%, 947px);
+    height: auto;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08));
+  }
 
-    .tool-link img {
-      display: block;
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-    }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-    .tool-link::after {
-      position: absolute;
-      right: 11%;
-      bottom: 0.1em;
-      left: 11%;
-      height: 2px;
-      content: "";
-      background: var(--line);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 120ms steps(2, end);
-    }
+  .tool-grid {
+    width: min(100%, 1320px);
+    justify-self: center;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(14px, 2vw, 20px);
+  }
 
-    .tool-link:hover,
-    .tool-link:focus-visible {
-      transform: translateY(-4px);
-    }
+  .tool-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 14px;
+    padding: 20px 18px 18px;
+    min-height: 154px;
+    text-decoration: none;
+    color: var(--ink);
+    background: rgba(244, 248, 255, 0.03);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 140ms steps(3, end), transform 140ms steps(3, end), background 140ms steps(3, end);
+  }
 
-    .tool-link:hover::after,
-    .tool-link:focus-visible::after {
-      transform: scaleX(1);
-    }
+  .tool-id {
+    font-family: var(--font-display);
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
 
-    .tool-link:focus-visible {
-      box-shadow: 0 0 0 3px var(--focus);
-      border-radius: 2px;
-    }
+  .tool-icon {
+    display: block;
+    width: 30px;
+    height: 30px;
+    color: var(--ink-dim);
+    transition: color 140ms steps(3, end);
+  }
 
-    .tool-link + .tool-link::before {
-      position: absolute;
-      left: calc(-1 * clamp(8px, 1.5vw, 26px));
-      width: 2px;
-      height: 1.52em;
-      content: "";
-      background: var(--line);
-    }
+  .tool-icon svg { display: block; width: 100%; height: 100%; }
 
-    @media (max-width: 760px) {
-      .page {
-        grid-template-rows: auto auto;
-        gap: 7vh;
-      }
+  .tool-name {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
 
-      .hero { min-height: 48vh; }
+  .tool-card::after {
+    content: "";
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 140ms steps(3, end);
+  }
 
-      .title-image { width: min(100%, 540px); }
+  .tool-card:hover,
+  .tool-card:focus-visible {
+    border-color: var(--line-strong);
+    background: rgba(244, 248, 255, 0.055);
+    transform: translateY(-3px);
+  }
 
-      .tool-nav {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
+  .tool-card:hover .tool-icon,
+  .tool-card:focus-visible .tool-icon {
+    color: var(--accent);
+  }
 
-      .tool-link + .tool-link::before {
-        top: -10px;
-        left: 50%;
-        width: 1.65em;
-        height: 2px;
-        transform: translateX(-50%);
-      }
+  .tool-card:hover::after,
+  .tool-card:focus-visible::after {
+    transform: scaleX(1);
+  }
 
-      .tool-link::after {
-        right: 25%;
-        left: 25%;
-      }
-    }
+  .tool-card:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent);
+  }
 
-    @media (prefers-reduced-motion: reduce) {
-      .tool-link,
-      .tool-link::after { transition: none; }
-    }
-  </style>
+  .tool-card--empty {
+    border-style: dashed;
+    border-color: var(--line);
+    color: var(--ink-faint);
+  }
+
+  .tool-card--empty .tool-icon {
+    color: var(--ink-faint);
+  }
+
+  .tool-card--empty::after {
+    content: none;
+  }
+
+  .tool-card--empty:hover,
+  .tool-card--empty:focus-visible {
+    transform: none;
+    background: rgba(244, 248, 255, 0.03);
+    border-color: var(--line);
+  }
+
+  .status-bar {
+    justify-self: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: clamp(28px, 5vw, 48px);
+    font-family: var(--font-display);
+    font-size: 15px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: blink 1600ms steps(1, end) infinite;
+  }
+
+  @keyframes blink {
+    0%, 45% { opacity: 1; }
+    50%, 95% { opacity: 0.25; }
+    100% { opacity: 1; }
+  }
+
+  @media (max-width: 1000px) {
+    .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 760px) {
+    .page { grid-template-rows: auto auto auto; gap: 6vh; }
+    .hero { min-height: 26vh; }
+    .title-image { width: min(100%, 540px); }
+    .tool-grid { grid-template-columns: 1fr; }
+    .tool-card { grid-template-columns: auto 1fr; grid-template-rows: auto; align-items: center; min-height: 0; padding: 16px 18px; }
+    .tool-card .tool-id { grid-column: 1 / -1; }
+    .tool-card::after { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sweep { display: none; }
+    .status-dot { animation: none; opacity: 1; }
+    .tool-card, .tool-icon, .tool-card::after { transition: none; }
+  }
+</style>
 </head>
 <body>
+  <div class="sweep" aria-hidden="true"></div>
   <main class="page">
     <section class="hero" aria-labelledby="site-title">
       <h1 id="site-title" class="sr-only">Standford</h1>
@@ -184,12 +279,105 @@
       </div>
     </section>
 
-    <nav class="tool-nav" aria-label="店舗ツール">
-      <!-- 下の # を実際のURLへ置き換えてください。 -->
-      <a class="tool-link" href="https://script.google.com/macros/s/AKfycbzCCh9QfrfCALPTSLAS34aET-HERnKPMp1h4pm_JJkpF-6Chy1ApA7XTjTWudAigs9Pxw/exec" aria-label="医薬品出庫量を開く"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJ0AAAAYCAYAAADgW/+9AAAHiUlEQVR4nOWbW4yeRRnHf7PdwSlEbGJUBC8oIYYEjU2JMZESFrjwUCm02+7WKAYvSIQACRrihXJDDInCJQlccAhQoIUWiIcgloQ2NFETo8VqSiJVI6fSWl0vjGPGdrh4Z76dbzqn7913Wwn/ZPN+M/PMM4f3eZ/DPLOC0wxt7AbgdSXF7yp0m5QUz/QcY3uffkqKrX36FeYxq6TYNSTPzDiXATcrKeYH4PUwsBIQgHVPj7hMROefbyopbvME00ud1ACYAw4DRaEDtmhjf6+keK3nOL8B/gKcAKYqz4uBT/Ucp4Q5YNmFzsEOyOu/wI85eZ9WAMcr5U0xs2mnBWLJXPJTSfHVcKBoHA9f/kSmPcYPtEnupVFSXFfoh5LinlJ7hGf7ascKhhSEGkr7OCkO99XQ2tgvxXXTdBtxBHiJccG5Avgo8FPg37QJnJfw1IJ3uHr/pfh+W4D/AD9x5Q8DVwF/A37l6C4E1gIHgQOJcU/02ZD3IrSxsw1k6wCrjb0B+AeL++Th39OorKR4usDvHDeu5+M1WlyONZ6gM80LIbNp1/BzJcXz0eIA5pUU2xoWWYWS4tlUvTZ2I/BG2K6NvRJ4QkmxP6jbrqS4c4i5LAe0sevo/KjefqBbY63/HHUF4HFVpT2sLwmdisYN+3sF4lHz+Uaabiox0OCmQBv7BeD60PSGZlEb+y3g8tg0O7pBnfrThJrJazGJtnUvtLE7gD1Kivta6Av4q5Liu306ukBkDF7TpcxTrJKXDCXFC8AL2tivxxpUG7sJ+AwgtLGb3Zz8l3JISfFKzE8buzGnQRO0twOHGDfx8dOP98l+K6yitp8t+z0SzIqpVY7fmhJdo692jnsnfXz8pHktaTqhjX2ydYCUhsrgK9rYFUqKR4K6LQG/eIEHgTGh08ZeBMwDTUIHXOL+lgvHB+DRpOmC3y2m9kN0+3QiqB/53trYs5QUj1bGXEn3TuL+pQ/Xl09CUtM5QbsrVuPa2AfoIsUbK5MswvONfBiRMhthFKmN/RpwtSs+02pmTpFpXjEAj4k0Xe0czu3d3qWYVyXFN/v2zcFLZiyRTykpDiTojftbDuQ2PI66avT/l9DGfp6CJtPGXlpqDzDJugWwagL6UwKv6cYWUvGTBjv/iTRQaMpjWEf/GPDYUOMvByrne7bQ3upDn7Q/jmcuSl0TtI/mQWdZkpoyR1+Zd7NceJ9OuMFm6L6MnI/wQeC4O+aIz+V8+ZiSYm/rBAJYujO4gxE/70tMBDfHYuYh/ricw13MWOQcbyXFPm3sxwpTWkt33vgy8Pak6wmQEkxBl3H5sytPAWcAG+ic+BcZd6HWAR8vjLGLxfe6mcWMROqcLmxPZSZmgf/R+d5TwInYp9tEdyBcyrFN0zmwufajQFHoQo0W+XR3JWi3BL9jn+6pDP/P0jnPNYRng2vogpkastFeJRLc5XzYexvGKCH5ASop7o7rtLFXA/vjg19t7BHg5twAIb02dj1wJLc2bey1FDIW2tgvAwth+1j0qqS4NTcRx+A+ukCiSJfpO4qCM1GuNz0pDYub3+PA447fRYGpitNgsUCn5hObOW/Ck32cIH8nx6sxWKlqbG3sQ8BbSorvZ0iSJjhjYqeAy50FS0WdrTjf8c9ZgNXuTDBn4hdCZkmfLrOojcAf3O9rlRTPTTBpAK+Vchvvv66P0KXg3gB+6eoOxcRKile1sZ5nHNz0CTKGOLitoZfP1tBugd8yvk+Kzrz+C/hFRL8OOLdhLh6aLk2ZwhyLacwUNscVYz5ddkRjPw3MeQ2ljd2ujf2TkuKPrbOuHeKG15a0sVcAj2Yi6GSfCH0EZIiD2xqGiE6TPp2S4kdxpbs2tj82fdrYo8BNDXPxOKyk2JlqCMxrrn090bqrms6p1Qej1NVWbexGbewdrupBJcXu0qwjc1byGX35e5kbJWPImLX3m6bzKa/UPs4480qivRXnB/zDA2D/XB1YnRQWwkKLpsu12+B5XsPEczY/fH4RODuq30N3Cyb2VbIn3pX15PBe1nSpF66Aa4B/ArtJnza0YCdwJvmofpb8fTv/PBYyTGq6UCvlHGTn0z2X6HNUSXFLgr6arnJHDjOu6IOB+2v9EnhfabpC5OjNa9L0tUBJ8bNSuzb2Gia8b5fTdClVXYOPbo7VCEM4m/8BN94rwPPAD4F9Sop73c2TI3RRb2ue9VRrutbxems6bewFwJVKinknTDLiG2duznC/17hjp2Tu1ZdT9+mCJH/pvpxk8b5d8UaxF8w+GYkkekSzHlv9PIKcLMA+1z4T0LbO61RrutbxlqLp1tNFnQ8A7wDfps01WkUiggzaff/UfbrUuWXKNVpJ27noSOgs8A1t7HUZhr2eDWdkNbrjMG7etbG3AZ/zCyjcdvUZlkmunNsefUYopKLGno10RSgpfk3DS17qfbqWf+zRxm6j+8eb5vt2XtOxDM94cvHLrGmW1K2Nvwe/Z4N7YvHh8HJouhbYwrPlgx1qHkuCE9YYuflCPXodg9d022oO4wAYTbjx3t1JghMn/CvJ80mvNPXOSEA+eT4pXEbidMOnRlP343Ll5hjgXe1AszZsH0DxAAAAAElFTkSuQmCC" alt="医薬品出庫量" /></a>
-      <a class="tool-link" href="https://script.google.com/macros/s/AKfycbxcePkzYF1le4abHIJtUm6aA6r3zjxCe11I1IRo5fWhyy6b-dRSsjjmrfRDOy01ZJB_Bg/exec" aria-label="小児薬用量を開く"><img src="data:image/png;base64,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" alt="小児薬用量" /></a>
-      <a class="tool-link" href="https://script.google.com/macros/s/AKfycbzBSD6VBBcfFsHqqocavI2tDx73OVRDImykhUzhiakp/dev" aria-label="英語版薬剤情報提供書を開く"><img src="data:image/png;base64,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" alt="英語版薬剤情報提供書" /></a>
+    <nav class="tool-grid" aria-label="店舗ツール">
+      <a class="tool-card" href="#" aria-label="医薬品出庫量を開く">
+        <span class="tool-id">ST-01</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 12 L6 25 L21 25 L21 12" stroke-linejoin="miter" />
+            <path d="M6 12 L13.5 6 L21 12" stroke-linejoin="miter" />
+            <line x1="6" y1="17" x2="21" y2="17" />
+            <line x1="21" y1="17" x2="27" y2="17" />
+            <polyline points="23,12.5 28,17 23,21.5" stroke-linejoin="miter" />
+          </svg>
+        </span>
+        <span class="tool-name">医薬品出庫量</span>
+      </a>
+
+      <a class="tool-card" href="#" aria-label="小児薬用量(シロップ)を開く">
+        <span class="tool-id">ST-02</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 6 L12 15 L7 25 L25 25 L20 15 L20 6" stroke-linejoin="miter" />
+            <line x1="10" y1="6" x2="22" y2="6" />
+            <line x1="9" y1="20" x2="23" y2="20" />
+            <line x1="12" y1="15" x2="20" y2="15" />
+          </svg>
+        </span>
+        <span class="tool-name">小児薬用量(シロップ)</span>
+      </a>
+
+      <a class="tool-card" href="#" aria-label="外国語版薬剤情報提供書を開く">
+        <span class="tool-id">ST-03</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 4 L21 4 L26 9 L26 28 L8 28 Z" stroke-linejoin="miter" />
+            <path d="M21 4 L21 9 L26 9" stroke-linejoin="miter" />
+            <line x1="11" y1="14" x2="23" y2="14" />
+            <line x1="11" y1="18" x2="23" y2="18" />
+            <line x1="11" y1="22" x2="19" y2="22" />
+          </svg>
+        </span>
+        <span class="tool-name">外国語版薬剤情報提供書</span>
+      </a>
+
+      <a class="tool-card" href="#" aria-label="投与日数計算を開く">
+        <span class="tool-id">ST-04</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="5" y="8" width="22" height="19" stroke-linejoin="miter" />
+            <line x1="5" y1="13" x2="27" y2="13" />
+            <line x1="10" y1="5" x2="10" y2="10" />
+            <line x1="22" y1="5" x2="22" y2="10" />
+            <rect x="9" y="17" width="3" height="3" fill="currentColor" stroke="none" />
+            <rect x="14.5" y="17" width="3" height="3" fill="currentColor" stroke="none" />
+            <rect x="20" y="17" width="3" height="3" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="tool-name">投与日数計算</span>
+      </a>
+
+      <a class="tool-card" href="#" aria-label="調剤報酬改定を開く">
+        <span class="tool-id">ST-05</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 4 L20 4 L25 9 L25 28 L8 28 Z" stroke-linejoin="miter" />
+            <path d="M20 4 L20 9 L25 9" stroke-linejoin="miter" />
+            <line x1="11" y1="14" x2="19" y2="14" />
+            <path d="M11 22 L15 22 L20 16" stroke-linejoin="miter" />
+            <polyline points="16,16 20,16 20,20" stroke-linejoin="miter" />
+          </svg>
+        </span>
+        <span class="tool-name">調剤報酬改定</span>
+      </a>
+
+      <div class="tool-card tool-card--empty" aria-hidden="true">
+        <span class="tool-id">ST-06</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="16" y1="9" x2="16" y2="23" />
+            <line x1="9" y1="16" x2="23" y2="16" />
+          </svg>
+        </span>
+        <span class="tool-name">追加予定</span>
+      </div>
+
+      <div class="tool-card tool-card--empty" aria-hidden="true">
+        <span class="tool-id">ST-07</span>
+        <span class="tool-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="16" y1="9" x2="16" y2="23" />
+            <line x1="9" y1="16" x2="23" y2="16" />
+          </svg>
+        </span>
+        <span class="tool-name">追加予定</span>
+      </div>
     </nav>
+
+    <p class="status-bar">
+      <span class="status-dot" aria-hidden="true"></span>
+      SYSTEM READY
+    </p>
   </main>
 </body>
 </html>
