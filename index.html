@@ -3,384 +3,365 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a1730" />
-<meta name="description" content="Standford 店舗ツール" />
+<meta name="theme-color" content="#0a0a08" />
 <title>Standford</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --ink: #f4f8ff;
-    --ink-dim: rgba(244, 248, 255, 0.60);
-    --ink-faint: rgba(244, 248, 255, 0.36);
-    --bg-0: #08122a;
-    --bg-1: #16295c;
-    --bg-2: #4c5e7f;
-    --line: rgba(244, 248, 255, 0.16);
-    --line-strong: rgba(244, 248, 255, 0.34);
-    --accent: #8febff;
-    --accent-dim: rgba(143, 235, 255, 0.28);
-    --font-display: 'VT323', monospace;
-    --font-body: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
-  }
-
   * { box-sizing: border-box; }
-  html { min-height: 100%; }
+  html, body { margin: 0; min-height: 100%; }
+
+  :root {
+    --amber: #ffb43f;
+    --amber-hi: #ffcf7a;
+    --amber-glow: rgba(255, 180, 63, 0.8);
+  }
 
   body {
     min-height: 100vh;
-    margin: 0;
-    color: var(--ink);
-    font-family: var(--font-body);
-    background:
-      radial-gradient(circle at 16% 42%, rgba(76, 130, 220, 0.16) 0%, rgba(76, 130, 220, 0) 40%),
-      radial-gradient(circle at 88% 16%, rgba(143, 235, 255, 0.08) 0%, rgba(143, 235, 255, 0) 42%),
-      linear-gradient(118deg, var(--bg-0) 0%, var(--bg-1) 56%, var(--bg-2) 100%);
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(244, 248, 255, 0.025) 0px,
-      rgba(244, 248, 255, 0.025) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    mix-blend-mode: overlay;
-    z-index: 1;
-  }
-
-  .sweep {
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 40vh;
-    background: linear-gradient(to bottom, rgba(143, 235, 255, 0.10), transparent);
-    pointer-events: none;
-    z-index: 2;
-    animation: sweep-down 1100ms steps(24, end) 1;
-  }
-
-  @keyframes sweep-down {
-    from { transform: translateY(-40vh); opacity: 1; }
-    to { transform: translateY(150vh); opacity: 0; }
-  }
-
-  .page {
-    position: relative;
-    z-index: 3;
-    min-height: 100vh;
-    display: grid;
-    grid-template-rows: 1fr auto auto;
-    padding: clamp(28px, 6vw, 88px) clamp(24px, 7vw, 112px) clamp(28px, 5vw, 56px);
-  }
-
-  .hero {
-    display: grid;
-    justify-items: center;
-    align-content: center;
-    min-height: min(40vh, 400px);
-  }
-
-  .title-wrap {
-    width: min(100%, 1250px);
+    background: radial-gradient(circle at 50% 28%, #2c2c2c 0%, #141414 60%, #0a0a0a 100%);
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: clamp(14px, 4vw, 40px);
+    padding-top: clamp(84px, 12vw, 120px);
+    font-family: 'DotGothic16', monospace;
   }
 
-  .title-image {
-    display: block;
-    width: min(100%, 947px);
+  /* ===== logo: bigger + glowing, with occasional neon flicker ===== */
+  .logo {
+    position: fixed;
+    top: clamp(12px, 2.2vw, 26px);
+    left: clamp(12px, 2.2vw, 26px);
+    width: clamp(150px, 18vw, 240px);
     height: auto;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
-    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.08));
+    z-index: 20;
+    filter:
+      drop-shadow(0 0 4px rgba(255, 200, 120, 0.9))
+      drop-shadow(0 0 14px rgba(255, 180, 63, 0.55))
+      drop-shadow(0 0 34px rgba(255, 160, 40, 0.3));
+    animation: neon-flicker 7s steps(1, end) infinite;
   }
 
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  @keyframes neon-flicker {
+    0%, 41%, 43.5%, 45.2%, 100% { opacity: 1; }
+    41.8% { opacity: 0.55; }
+    44.3% { opacity: 0.75; }
+    72% { opacity: 1; }
+    72.6% { opacity: 0.82; }
+    73.2% { opacity: 1; }
   }
 
-  .tool-grid {
-    width: min(100%, 1320px);
-    justify-self: center;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: clamp(14px, 2vw, 20px);
-  }
-
-  .tool-card {
+  .board-frame {
     position: relative;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 14px;
-    padding: 20px 18px 18px;
-    min-height: 154px;
-    text-decoration: none;
-    color: var(--ink);
-    background: rgba(244, 248, 255, 0.03);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 140ms steps(3, end), transform 140ms steps(3, end), background 140ms steps(3, end);
+    width: min(100%, 880px);
+    background: linear-gradient(160deg, #3d3d3d, #1c1c1c 58%, #0f0f0f);
+    border-radius: 10px;
+    padding: 22px;
+    box-shadow: 0 24px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
   }
 
-  .tool-id {
-    font-family: var(--font-display);
-    font-size: 15px;
-    letter-spacing: 0.14em;
-    color: var(--ink-faint);
+  .screw {
+    position: absolute;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #6f6f6f, #202020 70%);
+  }
+  .screw.tl { top: 10px; left: 10px; }
+  .screw.tr { top: 10px; right: 10px; }
+  .screw.bl { bottom: 10px; left: 10px; }
+  .screw.br { bottom: 10px; right: 10px; }
+
+  .screen {
+    position: relative;
+    background: #060503;
+    border-radius: 3px;
+    overflow: hidden;
+    padding: 4px;
+    box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 3px rgba(255,180,63,0.15);
+    animation: screen-hum 9s linear infinite;
   }
 
-  .tool-icon {
-    display: block;
-    width: 30px;
-    height: 30px;
-    color: var(--ink-dim);
-    transition: color 140ms steps(3, end);
+  @keyframes screen-hum {
+    0%, 100% { box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 3px rgba(255,180,63,0.14); }
+    50% { box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 5px rgba(255,180,63,0.2); }
   }
 
-  .tool-icon svg { display: block; width: 100%; height: 100%; }
-
-  .tool-name {
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: 0.01em;
-  }
-
-  .tool-card::after {
+  .screen::before {
     content: "";
     position: absolute;
-    left: 18px;
-    right: 18px;
-    bottom: 0;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 140ms steps(3, end);
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255,180,63,0.07) 1px, transparent 1.3px);
+    background-size: 5px 5px;
+    z-index: 1;
   }
 
-  .tool-card:hover,
-  .tool-card:focus-visible {
-    border-color: var(--line-strong);
-    background: rgba(244, 248, 255, 0.055);
-    transform: translateY(-3px);
+  .screen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px),
+      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
+    z-index: 2;
   }
 
-  .tool-card:hover .tool-icon,
-  .tool-card:focus-visible .tool-icon {
-    color: var(--accent);
+  /* sweeping refresh line, like a display scan */
+  .scanline {
+    position: absolute;
+    left: 0; right: 0;
+    height: 26%;
+    background: linear-gradient(to bottom, transparent, rgba(255,180,63,0.05), transparent);
+    z-index: 2;
+    pointer-events: none;
+    animation: scan-move 6s linear infinite;
   }
 
-  .tool-card:hover::after,
-  .tool-card:focus-visible::after {
-    transform: scaleX(1);
+  @keyframes scan-move {
+    from { top: -30%; }
+    to { top: 130%; }
   }
 
-  .tool-card:focus-visible {
-    box-shadow: 0 0 0 2px var(--accent);
+  .marquee {
+    position: relative;
+    z-index: 3;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255,180,63,0.22);
+    padding: 8px 0;
   }
 
-  .tool-card--empty {
-    border-style: dashed;
-    border-color: var(--line);
-    color: var(--ink-faint);
+  .marquee-track {
+    display: inline-block;
+    white-space: nowrap;
+    color: var(--amber);
+    font-family: 'VT323', monospace;
+    font-size: 19px;
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 6px var(--amber-glow);
+    padding-left: 100%;
+    animation: scroll-left 16s linear infinite;
   }
 
-  .tool-card--empty .tool-icon {
-    color: var(--ink-faint);
+  @keyframes scroll-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
   }
 
-  .tool-card--empty::after {
-    content: none;
-  }
-
-  .tool-card--empty:hover,
-  .tool-card--empty:focus-visible {
-    transform: none;
-    background: rgba(244, 248, 255, 0.03);
-    border-color: var(--line);
-  }
-
-  .status-bar {
-    justify-self: center;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: clamp(28px, 5vw, 48px);
-    font-family: var(--font-display);
+  .table-head {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 78px 1fr 150px 26px;
+    padding: 10px 14px 8px;
+    font-family: 'VT323', monospace;
     font-size: 15px;
-    letter-spacing: 0.14em;
-    color: var(--ink-faint);
-    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255,180,63,0.45);
   }
 
-  .status-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
-    animation: blink 1600ms steps(1, end) infinite;
+  .board-table {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    padding: 0 4px 6px;
   }
 
-  @keyframes blink {
-    0%, 45% { opacity: 1; }
-    50%, 95% { opacity: 0.25; }
+  .row {
+    display: grid;
+    grid-template-columns: 78px 1fr 150px 26px;
+    align-items: center;
+    padding: 12px 14px;
+    text-decoration: none;
+    border-top: 1px solid rgba(255,180,63,0.12);
+    color: var(--amber);
+    transition: background 100ms steps(2, end);
+    opacity: 0;
+    animation: row-boot 240ms steps(4, end) forwards;
+    animation-delay: var(--d);
+  }
+
+  @keyframes row-boot {
+    0% { opacity: 0; }
+    40% { opacity: 1; }
+    55% { opacity: 0.3; }
     100% { opacity: 1; }
   }
 
-  @media (max-width: 1000px) {
-    .tool-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .row:last-child { border-bottom: 1px solid rgba(255,180,63,0.12); }
+
+  .cell { text-shadow: 0 0 6px rgba(255,180,63,0.55); }
+
+  .cell-code {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--amber-hi);
   }
 
-  @media (max-width: 760px) {
-    .page { grid-template-rows: auto auto auto; gap: 6vh; }
-    .hero { min-height: 26vh; }
-    .title-image { width: min(100%, 540px); }
-    .tool-grid { grid-template-columns: 1fr; }
-    .tool-card { grid-template-columns: auto 1fr; grid-template-rows: auto; align-items: center; min-height: 0; padding: 16px 18px; }
-    .tool-card .tool-id { grid-column: 1 / -1; }
-    .tool-card::after { display: none; }
+  .cell-name { font-size: 17px; letter-spacing: 0.02em; }
+
+  .cell-status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+    color: rgba(255,180,63,0.7);
+  }
+
+  .led-dot {
+    width: 6px; height: 6px;
+    background: var(--amber);
+    box-shadow: 0 0 6px var(--amber-glow);
+    animation: blink 2000ms steps(1, end) infinite;
+  }
+
+  @keyframes blink {
+    0%, 60% { opacity: 1; }
+    65%, 95% { opacity: 0.25; }
+    100% { opacity: 1; }
+  }
+
+  .cell-arrow {
+    font-size: 12px;
+    text-align: right;
+    opacity: 0;
+    transform: translateX(-4px);
+    transition: opacity 100ms steps(2,end), transform 100ms steps(2,end);
+  }
+
+  .row:hover, .row:focus-visible {
+    background: rgba(255,180,63,0.09);
+    outline: none;
+  }
+  .row:hover .cell, .row:focus-visible .cell { text-shadow: 0 0 10px rgba(255,180,63,0.95); }
+  .row:hover .cell-arrow, .row:focus-visible .cell-arrow { opacity: 1; transform: translateX(0); }
+  .row:focus-visible { box-shadow: inset 0 0 0 1px rgba(255,180,63,0.6); }
+
+  .row--empty { color: rgba(255,180,63,0.28); cursor: default; }
+  .row--empty .cell { text-shadow: none; }
+  .row--empty .cell-status { color: rgba(255,180,63,0.28); }
+
+  .board-footer {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px 4px;
+    font-family: 'VT323', monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    color: rgba(255,180,63,0.45);
+  }
+
+  .clock { color: rgba(255,180,63,0.8); text-shadow: 0 0 5px rgba(255,180,63,0.4); }
+  .clock .colon { animation: blink 1000ms steps(1, end) infinite; }
+
+  @media (max-width: 560px) {
+    body { padding-top: clamp(110px, 26vw, 150px); }
+    .table-head { display: none; }
+    .row { grid-template-columns: 60px 1fr; }
+    .cell-status { grid-column: 1 / 2; justify-content: flex-start; font-size: 13px; opacity: 0.75; }
+    .cell-arrow { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .sweep { display: none; }
-    .status-dot { animation: none; opacity: 1; }
-    .tool-card, .tool-icon, .tool-card::after { transition: none; }
+    .marquee-track, .logo, .scanline, .led-dot, .screen, .clock .colon { animation: none; }
+    .row { animation: none; opacity: 1; }
   }
 </style>
 </head>
 <body>
-  <div class="sweep" aria-hidden="true"></div>
-  <main class="page">
-    <section class="hero" aria-labelledby="site-title">
-      <h1 id="site-title" class="sr-only">Standford</h1>
-      <div class="title-wrap">
-        <img class="title-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA7MAAACGCAYAAAAPQd3sAAAPfUlEQVR4nO3dTcgs2VkA4LfuvXXTmY0BlUyGiGsHlOhKNEacZPxJyARkiAMGI4aEOHERXLp14VJXkgiOIwRmIOIfOCRIyCzEn8WERMW1S50YCAqX8pZzy8W9H3zT3+10dVedOj/9PPDR9P3ud+pUdVe95z1vn64uVjSM070126vBru+eyN2HQzZ4PZ7e9d2/J94GAJkM4/TnEfGLCTfx3V3fPZWw/Yscm0TEB3d99w+5OwEQETGM0wsR8VKKtm+laJSL8Y7cHQAgqdTjhClx+5fqbu4OAFzzzlQNS2ZZosvdAQCqJo6k4bgCJUk2cSmZZQkz6gAsIY6k4bgCJUk2wSaZZQkzvwAsIY6k4bgCJVGZpUhmfgFYQhxJw3EFSqIyS5HM/AKwhDiShuMKlERlliKZ+QVgCXEEoH0qsxTJzC8AS4gjAO1TmaVIZtQBWEIcScNxBUqiMkuRzKgDsIQ4kobjCpREZRYAaI4KIkD7VGYBgOaoIAK0T2WWIplRB2AJcQSgfSqzFMmMOgBLiCMA7VOZBQCaozIL0D6VWQCgOSqzAO1LNnF5J1XDXAQz6gAscTCODOP0vke/7649Xv+7OYnwO5d0rmKfHMbpf+Ltx7c78Pzq8XZEPHj0/MHV813fvbFJjwHOcGcYp1cj4rncHanVME73Vmrq/q7v3rVSW1sxow7AEo+NI8M4PRcRr27cl5b8yqOfNTyxUjsAq7sVqrMAQB6HKrOWQQG0w5pZAKA5hwY4xicA7fBtxhTJmlkAljgURx5s2gsAqiSZZQlrZgFYQmUWgLMJFgBALiqzAO2zZhYAaI7KLED7rJmlSNbMArDEoTjy1qa9AKBKW9yW5wu7vvvtDbaT1DBOfxQRn8jdj8JYMwvAEofiyO3E263x3u43DOP0CxHxF7n7AZDLFpXZVmZXVSEBYF3WzC7zv7k7AJCTjxnPJ5kFgHVZMwvA2bYIFq18FLWV/ViTBB+AJayZBeBsWySzrSQ8rezHmiT4ACyRa80sAA1QmZ2vlf0AgFIcmig2gQzAUSqz87WyHwBQikMTxSaQAThKZXa+VvZjTRJ8AJawZhaAs6nMztfKfqxJgg9ACtbMAnCUyux8rewHAJTOBDIAR93ZYButBKRN9mMYp5+OiL/dYlsr+MYwtvLy3rTruydy9+GYYZxejoiP5+7Hxl7a9d1v5e7EMcM43cvdh4q9vOu7F3N3Yo5hnD4QEV/J3Y+KWTNbuUu81tUwPjhkGKcvR8RHcvdjY1/e9d0nc3fimEs8l9agMjvfVvux22g7tKHP3YEM7ubuAMnV9Bq/I3cHKmfNLGxri0JWaS5xrHQxrJmdr5X9AChdTdfbViZsS2PNLKRR0/UVjlKZna+V/QAoXU3XWwPDNBzXeRwn4KKpzM7Xyn4AlK6m621NiXdNHNd5HCfgoqnMztfKfgCUrqbrbU2Jd02smQXgKJXZ+VrZD4DS1XS9rSnxrok1swActcU3mrUS6P863j5T3MVpA65j/388p1MADaopbtSUeNfkQeL2a/rG7IN2fff6ME6n3mblajxy/RGgSu4zO9Ou716LiNdy9wPgAtQUNyQCaaT+5Nj9xO1vZtd3X8/dB4BcrJkFoDQ1xY2aEu+apK7MAtAAa2YBKE1NcaOmxLsmW4xPAKicyiwAnK+mxLsmKrPAWlynG2bmEwDOZ8I2DeMTYC2u0w0TLAAoTU0DDzP+aajMAnCUNbMAlKamuFFT4l0Tk+0AHGXNLACcr6bEuyYqs8BaXKcbZuYTAM5nwjYN4xNgLa7TDRMsoG5P5u5ABu/O3QGSe0/uDpzAjH8aKrMVGMbpR3P3gZP9YO4OZPADuTtAOnc22MaLwzi9uMF2stj13RO5+0B9hnG6l7sPFXt2xeP3e7u++92V2mI9z6z1Gh+6Rg/j9CPxMBG9FRFvRcTteJhA3dp7vH3k97+6Rj+5IfVk+90Sr8NbjSmGcfrLiPj5LbbVohXfO/d3ffeujbd5id6/4vF7Ztd3/3j9H4Zx+tl4GE+6BY/vX6l/F2eLZBagVH3uDpDWME5P7/ru3x7zqzc27wynUPFO63buDkCldtefDOP0NxHxc5n6QviYMQBts1aqTl43oAZyqcy8AOURwAHWY+1lnbxuABwlmS2Pj1YBrMfHKetkfAKUaH+cbtyemWABQMtU+OrkdQNKtP8JSp+ozEwyC0DLxLk6ed0AOMq3GRdm13dfG8bpT+Lm13Zfmfu8j4hPpO1tfCsivhkPZ9CvtnvrMc+v+nf1/MqDmc8f9zXmV06ZEbv6+7nPa/ZaRHw7dycWeioins3diYJ9JSLeTNT2oevK9ccrS86b90TEh87827neStz+Id+KiH/NtO213I6IFzJtW2W2bv8ZEa8f+T/fK56XEo8/GBHfn7D9uwnbPtXXI+I7K7RzSvxY27tj+1vcpH6fvhkRf5d4GyldHZ8PRKJz6c6u755fqzH3wFrHru8+t0Y7wzilTmY/s+u7f0m8Dc6w5nmdk2vKYbu+++XcfVjDBq9xrjWzn9v13TcybXs1wzjlSmZVZuv21V3ffTZ3J5YaxulLEZHyWns/Ydsn2fXdR3L3YQ0bxJT9NbKpJ96+tuu7TyXeRnLDOL0SER9L0bZgwRJj7g4AHJGrwuf6uIwvValbK69fK/vBevYrsalzqVbeg8kq2JJZAFqW66OKJXxEsmaOHyXwPuSYVpLN1JIdJ8ksSziBgdLlqsy6Pi5jzSwlcB6zz7cZn0dlliI5gYHS5Voz6/q4jPEJJXAes29/os3E2zwqswBwhlzfZqyis4zjRwm8D9m39ZrZVqjMAsAZVGbr5PhRAu9DjjHhMY/KLEVyAgOlU5mtk4/uUQLnMfv2cycTHvOozFIkJzBQOpXZOhmfUALnMfv2J0hNvM2jMkuRzFgCpVOZrZMBIiVwHrNvP3eSS2V2J3cHajeM072Vmrq/67t3rdTWVsxYAqVTma2TASIlcB6zz7cZF0awAKBlKrN1cvwogfch+9xn9jzWzALAGVRm6+T4UQLvQ1iHNbMUyYwlUDqV2Tr56B4lcB6zT2W2MJJZlnACA6VTma2T8QklcB6zz5rZwggWALRMZbZOjh8l8D5kn8rseayZBYAz5IpzBjhQP+cxrCPZxNDat+b5yXh44l/v8KHnhx5vxcOSfffo8fa137+19/xBvH2gsv/7q+f7v7+y//dXz/fbnyLiixHxY/MOw1nuJmw7FTOWQOlyfQTM9XGZLY7fh+PweGL/+dX/47I4j+vz/N7zY3nIrQO/f+zzXd+9/pj2yWjVZHbXd/+8ZnslGcbpm5E2mb2fsO1UnMBA6ayZrVPqivr9xwxKYZ/zuDK7vntt401aM5uZjxnP54IGUB9rZutkgEgJnMccIz/ITDI7nwsaQH1UZutkfEIJnMdQOMFiPhe0myT4QOlUZuukMgvAUZLZ+QxMbpLgA6VTma2T8QlQA/lBZoLFfAYmAPVRma2TyiwlcB5zjPwgM8nsfC5oAPVxn9k6GZ9QAucxFE6wmM8F7SYJPlA695mtk8osAEdJZuczMLlJgg+UzprZOhmfAHCUYDGfgQlAfayZrZPKLABH3RnG6dWIeC7hNv5g13e/k7D9rRiYANRHZbZOJtsBOOrOo5+U7iZufysGJjc1keAP4/RyRHw84Sa+s+u7H0rYPnCYymydVGYBOGqLmc9WAnor+7GmVhL8PncHgGRUZuukMgvUQH6Q2RbBopWA3sp+AFwSldk6qcwCNZAfzJPsOKnMztfKfgBcklwDDQOcZVRmAdqRLI/aIli0EpAMTG6S4AOly3Wdcn1cRmUWqIH8ILMtEs1WApKByU1OYKB0uSZUXR+XaWUiHGib/CAza2bna2U/AC5JrglVA5xlWpkIB9omP5jHmtkCtLIfAJdEZbZOKrNADeQH81S9ZraVgN7KfqzJCQyUTmW2TiqzQA3kB/OozBaglf1YkxMYKJ3KbJ1UZoEamHibR2W2AK3sB8AlyTXQMMBZxvEDamDibR6V2QK0sh8AlyTXRKQBzjKOH1AD+cE8VVdmWwlIKrMA9XGf2TqpzAI1kB/MU3VltpWAZGACUB9rZuvUykQ40Db5wTxVV2ZbYWACUB9rZuvk+AE1kB/MU3VlthVmXgDqkyvOia/LOH5ADeQH81RdmW0lIJl5AaiP+8zWSWUWqIH8YJ5kx+lOqoav+egwTi280M8mbv9u4vZT+ONhnP4pdydW8DO5O7C2YZxeiYj/iIcD6u7Ex1vxcCA55/Gc9udu74dXPzA3vTCM0/etsR+7vvv8Bv3ldLczbfeLwzi9EcvPj0Pny1VcXbvd6485Y3eu1411PDuM0xciTdw5N/6cI/X4oMaxH2+XeuLymWGcXop13s85/VSqhrdIZt8bEZ/dYDu1u5+7A2f48Uc/lOdjuTtQifdGxKdXauvzK7XDut7KtN33PfrhPLleN9bxVET8Wu5OVKDGsR9vlzqxfDIiXki8jaq18hFgAHgcca5ONVYegMtjSUlmgjwALbP2sk4GiEANTLxlJpkFoGXiXJ28bkANTLxlJlgA0DKV2Tp53YAaqMxmJpkFoGXiXJ0MEIEaqMxmJsgD0DIVvjoZIAI1MPGW2Z1d3z2/VmPDON1bq61a7Pruidx9+B7+NE6/b9vjHn8pHn41+KV5LSK+vUI7393/h7XeN4/uJ3tpt+F5Zdd3nzrlD4ZxejYi/ipRfyjbofuVfilu3t/ynPuz/kREPJ2u+8V6NdaZKPjvA/9usj2hXd99dK22jP24cF+NiP+K5fc9fjIS3ou1YH8fEW/Ggji8xX1myWTXd7+5RjvDOP1hRPz6Gm3VZM2JnoQusep0zv0nx9V7QS0e+37Z9d1n1mh8GKcPR8SfrdFWTXZ99xuJN6EyCxRv13e/v1ZbFzox9KGlbZj5ZI5LTJgo1zkf6TEwvlyp49z/JW4fADhAMgvU5pzE1LXucqWejDPZl4YJKACOMsADanNOZfacjybThkNrZtcijqbhS1UAOEoQBmqjMsspUk9kqMwCQCYGeEBtrJnlFKnjnDgKAJkIwkBtVGY5hTWzdTIBBcBRBnhAbayZ5RTWzNbJmlkAjhKEgdqcU7FJndBQLmtmAaBRklmgNudUbCQcl8uaWQBolCAM1MaaWU5hzWydrJkF4CgDPKA21sxyCmtm62TNLABHCcJAbayZ5RQqs3VSmQXgKMksUBtrZjlF6gqfOJqGyiwARwnCQG2smeUUKrN1UpkF4CgDPKA21sxyCmtm66QyC8BRgjBwCayZvVypK3wqs2mozAJw1P8DgNE45beTQUwAAAAASUVORK5CYII=" alt="Standford" />
+  <img class="logo" src="data:image/png;base64,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" alt="Standford" />
+
+  <div class="board-frame">
+    <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
+    <div class="screen">
+      <span class="scanline" aria-hidden="true"></span>
+      <div class="marquee" aria-hidden="true">
+        <span class="marquee-track">STANDFORD SYSTEM ONLINE　・　全ツール正常稼働中　・　STANDFORD SYSTEM ONLINE　・　全ツール正常稼働中　・　</span>
       </div>
-    </section>
 
-    <nav class="tool-grid" aria-label="店舗ツール">
-      <a class="tool-card" href="#" aria-label="医薬品出庫量を開く">
-        <span class="tool-id">ST-01</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 12 L6 25 L21 25 L21 12" stroke-linejoin="miter" />
-            <path d="M6 12 L13.5 6 L21 12" stroke-linejoin="miter" />
-            <line x1="6" y1="17" x2="21" y2="17" />
-            <line x1="21" y1="17" x2="27" y2="17" />
-            <polyline points="23,12.5 28,17 23,21.5" stroke-linejoin="miter" />
-          </svg>
-        </span>
-        <span class="tool-name">医薬品出庫量</span>
-      </a>
-
-      <a class="tool-card" href="#" aria-label="小児薬用量(シロップ)を開く">
-        <span class="tool-id">ST-02</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 6 L12 15 L7 25 L25 25 L20 15 L20 6" stroke-linejoin="miter" />
-            <line x1="10" y1="6" x2="22" y2="6" />
-            <line x1="9" y1="20" x2="23" y2="20" />
-            <line x1="12" y1="15" x2="20" y2="15" />
-          </svg>
-        </span>
-        <span class="tool-name">小児薬用量(シロップ)</span>
-      </a>
-
-      <a class="tool-card" href="#" aria-label="外国語版薬剤情報提供書を開く">
-        <span class="tool-id">ST-03</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 4 L21 4 L26 9 L26 28 L8 28 Z" stroke-linejoin="miter" />
-            <path d="M21 4 L21 9 L26 9" stroke-linejoin="miter" />
-            <line x1="11" y1="14" x2="23" y2="14" />
-            <line x1="11" y1="18" x2="23" y2="18" />
-            <line x1="11" y1="22" x2="19" y2="22" />
-          </svg>
-        </span>
-        <span class="tool-name">外国語版薬剤情報提供書</span>
-      </a>
-
-      <a class="tool-card" href="#" aria-label="投与日数計算を開く">
-        <span class="tool-id">ST-04</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="5" y="8" width="22" height="19" stroke-linejoin="miter" />
-            <line x1="5" y1="13" x2="27" y2="13" />
-            <line x1="10" y1="5" x2="10" y2="10" />
-            <line x1="22" y1="5" x2="22" y2="10" />
-            <rect x="9" y="17" width="3" height="3" fill="currentColor" stroke="none" />
-            <rect x="14.5" y="17" width="3" height="3" fill="currentColor" stroke="none" />
-            <rect x="20" y="17" width="3" height="3" fill="currentColor" stroke="none" />
-          </svg>
-        </span>
-        <span class="tool-name">投与日数計算</span>
-      </a>
-
-      <a class="tool-card" href="#" aria-label="調剤報酬改定を開く">
-        <span class="tool-id">ST-05</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 4 L20 4 L25 9 L25 28 L8 28 Z" stroke-linejoin="miter" />
-            <path d="M20 4 L20 9 L25 9" stroke-linejoin="miter" />
-            <line x1="11" y1="14" x2="19" y2="14" />
-            <path d="M11 22 L15 22 L20 16" stroke-linejoin="miter" />
-            <polyline points="16,16 20,16 20,20" stroke-linejoin="miter" />
-          </svg>
-        </span>
-        <span class="tool-name">調剤報酬改定</span>
-      </a>
-
-      <a class="tool-card" href="#" aria-label="疑義解釈資料データベースを開く">
-        <span class="tool-id">ST-06</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 4 L20 4 L25 9 L25 28 L8 28 Z" stroke-linejoin="miter" />
-            <path d="M20 4 L20 9 L25 9" stroke-linejoin="miter" />
-            <line x1="11" y1="15" x2="21" y2="15" />
-            <line x1="11" y1="19" x2="18" y2="19" />
-            <text x="17" y="26" font-family="VT323, monospace" font-size="13" fill="currentColor" stroke="none">?</text>
-          </svg>
-        </span>
-        <span class="tool-name">疑義解釈資料データベース</span>
-      </a>
-
-      <div class="tool-card tool-card--empty" aria-hidden="true">
-        <span class="tool-id">ST-07</span>
-        <span class="tool-icon" aria-hidden="true">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="16" y1="9" x2="16" y2="23" />
-            <line x1="9" y1="16" x2="23" y2="16" />
-          </svg>
-        </span>
-        <span class="tool-name">追加予定</span>
+      <div class="table-head" aria-hidden="true">
+        <span>CODE</span><span>TOOL</span><span style="text-align:right;">STATUS</span><span></span>
       </div>
-    </nav>
 
-    <p class="status-bar">
-      <span class="status-dot" aria-hidden="true"></span>
-      SYSTEM READY
-    </p>
-  </main>
+      <nav class="board-table" aria-label="店舗ツール">
+
+        <a class="row" href="#" style="--d:350ms" aria-label="医薬品出庫量を開く">
+          <span class="cell cell-code">ST-01</span>
+          <span class="cell cell-name">医薬品出庫量</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <a class="row" href="#" style="--d:520ms" aria-label="小児薬用量(シロップ)を開く">
+          <span class="cell cell-code">ST-02</span>
+          <span class="cell cell-name">小児薬用量(シロップ)</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <a class="row" href="#" style="--d:690ms" aria-label="外国語版薬剤情報提供書を開く">
+          <span class="cell cell-code">ST-03</span>
+          <span class="cell cell-name">外国語版薬剤情報提供書</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <a class="row" href="#" style="--d:860ms" aria-label="投与日数計算を開く">
+          <span class="cell cell-code">ST-04</span>
+          <span class="cell cell-name">投与日数計算</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <a class="row" href="#" style="--d:1030ms" aria-label="調剤報酬改定を開く">
+          <span class="cell cell-code">ST-05</span>
+          <span class="cell cell-name">調剤報酬改定</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <a class="row" href="#" style="--d:1200ms" aria-label="疑義解釈資料データベースを開く">
+          <span class="cell cell-code">ST-06</span>
+          <span class="cell cell-name">疑義解釈資料データベース</span>
+          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
+          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
+        </a>
+
+        <div class="row row--empty" style="--d:1370ms" aria-hidden="true">
+          <span class="cell cell-code">ST-07</span>
+          <span class="cell cell-name">----------</span>
+          <span class="cell cell-status">COMING SOON</span>
+          <span class="cell cell-arrow"></span>
+        </div>
+      </nav>
+
+      <div class="board-footer">
+        <span>STANDFORD / 店舗ツール</span>
+        <span class="clock" id="clock">--<span class="colon">:</span>--<span class="colon">:</span>--</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function tick() {
+      var d = new Date();
+      var p = function (n) { return String(n).padStart(2, "0"); };
+      var el = document.getElementById("clock");
+      if (el) el.innerHTML = p(d.getHours()) + '<span class="colon">:</span>' + p(d.getMinutes()) + '<span class="colon">:</span>' + p(d.getSeconds());
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
 </html>
