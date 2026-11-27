@@ -83,47 +83,24 @@
   button{font-family:inherit;}
   a{color:inherit;text-decoration:none;}
   :focus-visible{outline:3px solid var(--primary);outline-offset:2px;}
-  .layout{display:flex;min-height:100vh;}
+  .layout{min-height:100vh;}
 
   /* ==========================================================================
      3. ナビゲーションドロワー（PC左固定 / モバイル上部チップ）
      ========================================================================== */
-  .drawer{
-    width:300px;flex-shrink:0;padding:1.5rem .75rem 1.5rem;
-    background:var(--sc-low);
-    position:sticky;top:0;height:100vh;overflow-y:auto;
-    border-radius:0 16px 16px 0;
-  }
+  .topbar{background:var(--sc-low);border-radius:0 0 20px 20px;padding:1.1rem 1.25rem 1rem;}
+  .topbar-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
   /* 題字: ドット絵ロゴ（白一色のPNG）をマスクにして、テーマ色で塗る */
-  .drawer .brand{
-    width:min(calc(100% - 2rem),236px);aspect-ratio:947/134;margin:.5rem 1rem .6rem;
+  .brand{
+    width:min(100%,236px);aspect-ratio:947/134;margin:.1rem 0 .4rem;
     background:var(--primary);
     -webkit-mask:url("data:image/png;base64,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") left center/contain no-repeat;
     mask:url("data:image/png;base64,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") left center/contain no-repeat;
   }
-  .drawer .brand-sub{font-size:14px;color:var(--on-surface-variant);margin:0 1rem 1.2rem;}
-  .drawer-heading{
-    font-size:14px;font-weight:500;color:var(--on-surface-variant);
-    margin:1rem 1rem .3rem;letter-spacing:.1px;
-  }
-  .drawer-list{display:flex;flex-direction:column;gap:2px;}
-  .nav-item{
-    all:unset;box-sizing:border-box;cursor:pointer;
-    display:flex;align-items:center;justify-content:space-between;gap:.6rem;
-    min-height:48px;padding:0 1rem;border-radius:28px;
-    font-size:14px;font-weight:500;color:var(--on-surface-variant);letter-spacing:.1px;
-    position:relative;
-  }
-  .nav-item::after{content:"";position:absolute;inset:0;border-radius:inherit;background:currentColor;opacity:0;pointer-events:none;}
-  .nav-item:hover::after{opacity:.08;}
-  .nav-item:focus-visible{outline:3px solid var(--primary);outline-offset:-2px;}
-  .nav-item[aria-pressed="true"]{background:var(--secondary-container);color:var(--on-secondary-container);}
-  .nav-item .lead{display:flex;align-items:center;gap:.7rem;min-width:0;}
-  .nav-item .n{font-size:14px;color:inherit;opacity:.75;font-variant-numeric:tabular-nums;}
-  .swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid var(--outline-variant);}
+  .brand-sub{font-size:14px;color:var(--on-surface-variant);margin:0;}
 
   .theme-btn{
-    all:unset;box-sizing:border-box;cursor:pointer;margin:1.4rem 1rem 0;
+    all:unset;box-sizing:border-box;cursor:pointer;margin:0;
     display:inline-flex;align-items:center;gap:.5rem;height:40px;padding:0 1rem;border-radius:20px;
     color:var(--primary);font-size:14px;font-weight:500;position:relative;
   }
@@ -133,30 +110,9 @@
   /* ==========================================================================
      4. メインコンテンツ & 検索バー
      ========================================================================== */
-  .content{flex:1;min-width:0;max-width:860px;padding:1.5rem 2rem 4.5rem;}
+  .content{max-width:860px;margin:0 auto;padding:1.5rem 1.25rem 4.5rem;}
 
-  .searchbar{
-    position:relative;display:flex;align-items:center;
-    height:56px;border-radius:28px;background:var(--sc-high);padding:0 .5rem 0 1rem;gap:.5rem;
-    margin-bottom:1.1rem;
-  }
-  .searchbar:focus-within{outline:3px solid var(--primary);outline-offset:0;}
-  .searchbar svg{color:var(--on-surface-variant);flex-shrink:0;}
-  .searchbar input{
-    flex:1;min-width:0;height:100%;border:0;background:transparent;color:var(--on-surface);
-    font-family:inherit;font-size:16px;letter-spacing:.5px;
-  }
-  .searchbar input:focus{outline:none;}
-  .searchbar input::placeholder{color:var(--on-surface-variant);}
-  .clear{
-    all:unset;box-sizing:border-box;cursor:pointer;width:40px;height:40px;border-radius:50%;
-    display:none;align-items:center;justify-content:center;color:var(--on-surface-variant);
-  }
-  .clear.show{display:flex;}
-  .clear:hover{background:color-mix(in srgb,var(--on-surface-variant) 10%,transparent);}
-  .clear:focus-visible{outline:3px solid var(--primary);outline-offset:0;}
 
-  .status{font-size:14px;color:var(--on-surface-variant);margin:0 0 1rem .5rem;}
 
   /* ==========================================================================
      5. セクション & ポータルカード（ツールグリッド / 資料リスト）
@@ -352,23 +308,8 @@
      7. モバイル対応（<= 840px: ドロワー → 上部のフィルターチップ）
      ========================================================================== */
   @media (max-width:840px){
-    .layout{flex-direction:column;}
-    .drawer{
-      width:100%;height:auto;position:static;border-radius:0 0 16px 16px;
-      padding:.9rem .9rem .7rem;
-    }
-    .drawer .brand{width:min(100%,200px);margin:.1rem .1rem .45rem;}
-    .drawer .brand-sub{margin:0 .1rem .5rem;}
-    .drawer-heading{margin:.5rem .1rem .3rem;}
-    .drawer-list{flex-direction:row;overflow-x:auto;gap:.5rem;padding-bottom:.15rem;scrollbar-width:none;}
-    .drawer-list::-webkit-scrollbar{display:none;}
-    .nav-item{
-      flex-shrink:0;white-space:nowrap;min-height:32px;padding:0 .75rem;border-radius:8px;
-      border:1px solid var(--outline);color:var(--on-surface-variant);
-    }
-    .nav-item[aria-pressed="true"]{border-color:transparent;}
-    .nav-item .n{display:none;}
-    .theme-btn{margin:.4rem 0 0;}
+    .topbar{padding:.9rem .9rem .8rem;}
+    .brand{width:min(100%,200px);margin:.1rem 0 .35rem;}
     .content{padding:1rem .9rem 4rem;}
     .tool-card{padding:.9rem;min-height:124px;}
     .emergency-card{padding:1rem;}
@@ -378,7 +319,7 @@
   }
 
   @media (prefers-reduced-motion:no-preference){
-    .tool-card,.emergency-card,.doc-card,.store-card,.nav-item,.theme-btn,.snackbar,.emergency-card::after{
+    .tool-card,.emergency-card,.doc-card,.store-card,.theme-btn,.snackbar,.emergency-card::after{
       transition:background-color .15s ease,opacity .18s ease,transform .18s ease;
     }
   }
@@ -386,36 +327,22 @@
 </head>
 <body>
 <div class="layout">
-  <!-- ===== ナビゲーションドロワー ===== -->
-  <nav class="drawer" aria-label="カテゴリ絞り込み">
-    <p class="brand" role="img" aria-label="Standford"></p>
-    <p class="brand-sub">いざという時にだいたいないものを</p>
-
-    <p class="drawer-heading" id="h-cat">カテゴリ</p>
-    <div class="drawer-list" id="catList" role="group" aria-labelledby="h-cat"></div>
-
-    <button class="theme-btn" id="themeToggle" type="button">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg>
-      <span id="themeLabel">外観: 自動</span>
-    </button>
-  </nav>
+  <!-- ===== ヘッダー ===== -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-title">
+        <p class="brand" role="img" aria-label="Standford"></p>
+        <p class="brand-sub">いざという時にだいたいないものを</p>
+      </div>
+      <button class="theme-btn" id="themeToggle" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg>
+        <span id="themeLabel">外観: 自動</span>
+      </button>
+    </div>
+  </header>
 
   <!-- ===== メインコンテンツ ===== -->
   <main class="content">
-    <div class="searchbar" role="search">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="2"/>
-        <path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-      <input type="text" id="q" placeholder="ツール・資料名で検索" aria-label="ツール・資料名で検索" autocomplete="off">
-      <button class="clear" id="clearBtn" type="button" aria-label="検索語を消去">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
-        </svg>
-      </button>
-    </div>
-
-    <p class="status" id="status" aria-live="polite"></p>
     <div id="portal"></div>
   </main>
 </div>
@@ -452,7 +379,7 @@ const ITEMS = [
     description: '往診時の臨時処方、いつまでつなげるかの確認',
     tone: 3,
     icon: 'calendar',
-    url: 'https://ogaflame.github.io/Days-of-administration/'
+    url: 'https://ogaflame.github.io/datedatedate/'
   },
   {
     id: 'pediatric-dose',
@@ -461,7 +388,7 @@ const ITEMS = [
     description: '体重・年齢別の用量算出',
     tone: 3,
     icon: 'calculator',
-    url: 'https://ogaflame.github.io/pediatric-dosage/'
+    url: 'https://script.google.com/macros/s/AKfycbwhZMbws9yuZoOMJ-T7J_t-0gQbt-loNYAmI6eZOAAVvPVYNbHEgHNEbZckFD4jQvGXEQ/exec'
   },
   {
     id: 'otc-sim',
@@ -551,7 +478,6 @@ const CATEGORIES = [
 /* ==========================================================================
    2. 状態管理・ユーティリティ関数・SVGアイコン定義
    ========================================================================== */
-let activeCat = null;
 
 function esc(s){
   return String(s ?? '').replace(/[&<>"']/g, c => ({
@@ -686,19 +612,8 @@ function renderStoreCard(item, terms){
 }
 
 function render(){
-  const qEl = document.getElementById('q');
-  document.getElementById('clearBtn').classList.toggle('show', qEl.value.length > 0);
-  const terms = qEl.value.trim().split(/\s+/).filter(Boolean);
-
-  const filtered = ITEMS.filter(item => {
-    if(activeCat !== null && item.category !== activeCat) return false;
-    if(!terms.length) return true;
-    const hay = [item.title, item.displayTitle, item.sub, item.badge, item.chip, item.category, item.description]
-      .filter(Boolean).join(' ').toLowerCase();
-    return terms.every(t => hay.includes(t.toLowerCase()));
-  });
-
-  document.getElementById('status').textContent = `${filtered.length} 件 (全 ${ITEMS.length} 件)`;
+  const terms = [];
+  const filtered = ITEMS;
   const container = document.getElementById('portal');
 
   if(!filtered.length){
@@ -768,37 +683,6 @@ function render(){
 }
 
 /* ==========================================================================
-   4. カテゴリナビゲーション構築
-   ========================================================================== */
-function addNavItem(list, label, count, value, swatchColor){
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.className = 'nav-item';
-  btn.setAttribute('aria-pressed', value === null ? 'true' : 'false');
-  btn.innerHTML = `
-    <span class="lead">
-      ${swatchColor ? `<span class="swatch" style="background:${swatchColor}"></span>` : ''}
-      <span>${esc(label)}</span>
-    </span>
-    <span class="n">${count}</span>`;
-  btn.addEventListener('click', () => {
-    activeCat = value;
-    [...list.children].forEach(el => el.setAttribute('aria-pressed', el === btn ? 'true' : 'false'));
-    render();
-  });
-  list.appendChild(btn);
-}
-
-function buildNav(){
-  const catList = document.getElementById('catList');
-  addNavItem(catList, 'すべて', ITEMS.length, null, null);
-  CATEGORIES.forEach(cat => {
-    const count = ITEMS.filter(i => i.category === cat.name).length;
-    addNavItem(catList, cat.name, count, cat.name, cat.swatchColor);
-  });
-}
-
-/* ==========================================================================
    5. Snackbar（リンク未設定時の案内）
    ========================================================================== */
 let snackbarTimer = null;
@@ -828,16 +712,8 @@ document.getElementById('portal').addEventListener('click', e => {
 });
 
 /* ==========================================================================
-   6. 検索 & 外観テーマ切替（draft_j_material3.html と共通キー gikai_theme）
+   6. 外観テーマ切替（draft_j_material3.html と共通キー gikai_theme）
    ========================================================================== */
-document.getElementById('q').addEventListener('input', render);
-document.getElementById('clearBtn').addEventListener('click', () => {
-  const q = document.getElementById('q');
-  q.value = '';
-  render();
-  q.focus();
-});
-
 const themeBtn = document.getElementById('themeToggle');
 const themeLabel = document.getElementById('themeLabel');
 const LABEL = { auto:'外観: 自動', light:'外観: ライト', dark:'外観: ダーク' };
@@ -864,7 +740,6 @@ themeBtn.addEventListener('click', () => {
 
 // 初期化
 applyTheme();
-buildNav();
 render();
 </script>
 </body>
