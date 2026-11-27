@@ -1,367 +1,871 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0a0a08" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
 <title>Standford</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet" />
 <style>
-  * { box-sizing: border-box; }
-  html, body { margin: 0; min-height: 100%; }
-
-  :root {
-    --amber: #ffb43f;
-    --amber-hi: #ffcf7a;
-    --amber-glow: rgba(255, 180, 63, 0.8);
+  /* ==========================================================================
+     1. Material 3 ベースライン カラーロール（draft_j_material3.html と完全統一）
+     ========================================================================== */
+  :root{
+    --primary:#6750a4; --on-primary:#ffffff;
+    --primary-container:#eaddff; --on-primary-container:#21005d;
+    --secondary-container:#e8def8; --on-secondary-container:#1d192b;
+    --tertiary:#7d5260; --on-tertiary:#ffffff;
+    --tertiary-container:#ffd8e4; --on-tertiary-container:#31111d;
+    --surface:#fef7ff; --on-surface:#1d1b20; --on-surface-variant:#49454f;
+    --sc-low:#f7f2fa; --sc:#f3edf7; --sc-high:#ece6f0; --sc-highest:#e6e0e9;
+    --outline:#79747e; --outline-variant:#cac4d0;
+    --highlight:#ffe08a; --on-highlight:#1d1b20;
+    --inverse-surface:#322f35; --inverse-on-surface:#f5eff7;
+    /* 区分タグ: プライマリのトーナルパレット 6 段階(淡 → 濃) */
+    --t1:#f6edff; --on-t1:#21005d;
+    --t2:#eaddff; --on-t2:#21005d;
+    --t3:#d0bcff; --on-t3:#21005d;
+    --t4:#b69df8; --on-t4:#21005d;
+    --t5:#6750a4; --on-t5:#ffffff;
+    --t6:#4f378b; --on-t6:#ffffff;
+    --font:"Google Sans","Roboto","Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
   }
 
-  body {
-    min-height: 100vh;
-    background: radial-gradient(circle at 50% 28%, #2c2c2c 0%, #141414 60%, #0a0a0a 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: clamp(14px, 4vw, 40px);
-    padding-top: clamp(84px, 12vw, 120px);
-    font-family: 'DotGothic16', monospace;
+  html[data-theme="dark"]{
+    --primary:#d0bcff; --on-primary:#381e72;
+    --primary-container:#4f378b; --on-primary-container:#eaddff;
+    --secondary-container:#4a4458; --on-secondary-container:#e8def8;
+    --tertiary:#efb8c8; --on-tertiary:#492532;
+    --tertiary-container:#633b48; --on-tertiary-container:#ffd8e4;
+    --surface:#141218; --on-surface:#e6e0e9; --on-surface-variant:#cac4d0;
+    --sc-low:#1d1b20; --sc:#211f26; --sc-high:#2b2930; --sc-highest:#36343b;
+    --outline:#938f99; --outline-variant:#49454f;
+    --highlight:#6b5a12; --on-highlight:#fff3c4;
+    --inverse-surface:#e6e0e9; --inverse-on-surface:#322f35;
+    --t1:#2d2640; --on-t1:#eaddff;
+    --t2:#3a2f5c; --on-t2:#eaddff;
+    --t3:#4f378b; --on-t3:#eaddff;
+    --t4:#6750a4; --on-t4:#ffffff;
+    --t5:#b69df8; --on-t5:#21005d;
+    --t6:#d0bcff; --on-t6:#381e72;
   }
 
-  /* ===== logo: bigger + glowing, with occasional neon flicker ===== */
-  .logo {
-    position: fixed;
-    top: clamp(12px, 2.2vw, 26px);
-    left: clamp(12px, 2.2vw, 26px);
-    width: clamp(150px, 18vw, 240px);
-    height: auto;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-    z-index: 20;
-    filter:
-      drop-shadow(0 0 4px rgba(255, 200, 120, 0.9))
-      drop-shadow(0 0 14px rgba(255, 180, 63, 0.55))
-      drop-shadow(0 0 34px rgba(255, 160, 40, 0.3));
-    animation: neon-flicker 7s steps(1, end) infinite;
+  @media (prefers-color-scheme: dark){
+    html:not([data-theme="light"]){
+      --primary:#d0bcff; --on-primary:#381e72;
+      --primary-container:#4f378b; --on-primary-container:#eaddff;
+      --secondary-container:#4a4458; --on-secondary-container:#e8def8;
+      --tertiary:#efb8c8; --on-tertiary:#492532;
+      --tertiary-container:#633b48; --on-tertiary-container:#ffd8e4;
+      --surface:#141218; --on-surface:#e6e0e9; --on-surface-variant:#cac4d0;
+      --sc-low:#1d1b20; --sc:#211f26; --sc-high:#2b2930; --sc-highest:#36343b;
+      --outline:#938f99; --outline-variant:#49454f;
+      --highlight:#6b5a12; --on-highlight:#fff3c4;
+      --inverse-surface:#e6e0e9; --inverse-on-surface:#322f35;
+      --t1:#2d2640; --on-t1:#eaddff;
+      --t2:#3a2f5c; --on-t2:#eaddff;
+      --t3:#4f378b; --on-t3:#eaddff;
+      --t4:#6750a4; --on-t4:#ffffff;
+      --t5:#b69df8; --on-t5:#21005d;
+      --t6:#d0bcff; --on-t6:#381e72;
+    }
   }
 
-  @keyframes neon-flicker {
-    0%, 41%, 43.5%, 45.2%, 100% { opacity: 1; }
-    41.8% { opacity: 0.55; }
-    44.3% { opacity: 0.75; }
-    72% { opacity: 1; }
-    72.6% { opacity: 0.82; }
-    73.2% { opacity: 1; }
+  /* ==========================================================================
+     2. ベーススタイル
+     ========================================================================== */
+  *{box-sizing:border-box;}
+  html{background:var(--surface);}
+  body{
+    margin:0;background:var(--surface);color:var(--on-surface);
+    font-family:var(--font);font-size:14px;line-height:1.5;letter-spacing:.2px;
+    -webkit-tap-highlight-color:transparent;
+  }
+  button{font-family:inherit;}
+  a{color:inherit;text-decoration:none;}
+  :focus-visible{outline:3px solid var(--primary);outline-offset:2px;}
+  .layout{display:flex;min-height:100vh;}
+
+  /* ==========================================================================
+     3. ナビゲーションドロワー（PC左固定 / モバイル上部チップ）
+     ========================================================================== */
+  .drawer{
+    width:300px;flex-shrink:0;padding:1.5rem .75rem 1.5rem;
+    background:var(--sc-low);
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    border-radius:0 16px 16px 0;
+  }
+  /* 題字: ドット絵ロゴ（白一色のPNG）をマスクにして、テーマ色で塗る */
+  .drawer .brand{
+    width:min(calc(100% - 2rem),236px);aspect-ratio:947/134;margin:.5rem 1rem .6rem;
+    background:var(--primary);
+    -webkit-mask:url("data:image/png;base64,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") left center/contain no-repeat;
+    mask:url("data:image/png;base64,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") left center/contain no-repeat;
+  }
+  .drawer .brand-sub{font-size:14px;color:var(--on-surface-variant);margin:0 1rem 1.2rem;}
+  .drawer-heading{
+    font-size:14px;font-weight:500;color:var(--on-surface-variant);
+    margin:1rem 1rem .3rem;letter-spacing:.1px;
+  }
+  .drawer-list{display:flex;flex-direction:column;gap:2px;}
+  .nav-item{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+    min-height:48px;padding:0 1rem;border-radius:28px;
+    font-size:14px;font-weight:500;color:var(--on-surface-variant);letter-spacing:.1px;
+    position:relative;
+  }
+  .nav-item::after{content:"";position:absolute;inset:0;border-radius:inherit;background:currentColor;opacity:0;pointer-events:none;}
+  .nav-item:hover::after{opacity:.08;}
+  .nav-item:focus-visible{outline:3px solid var(--primary);outline-offset:-2px;}
+  .nav-item[aria-pressed="true"]{background:var(--secondary-container);color:var(--on-secondary-container);}
+  .nav-item .lead{display:flex;align-items:center;gap:.7rem;min-width:0;}
+  .nav-item .n{font-size:14px;color:inherit;opacity:.75;font-variant-numeric:tabular-nums;}
+  .swatch{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1px solid var(--outline-variant);}
+
+  .theme-btn{
+    all:unset;box-sizing:border-box;cursor:pointer;margin:1.4rem 1rem 0;
+    display:inline-flex;align-items:center;gap:.5rem;height:40px;padding:0 1rem;border-radius:20px;
+    color:var(--primary);font-size:14px;font-weight:500;position:relative;
+  }
+  .theme-btn:hover{background:color-mix(in srgb,var(--primary) 8%,transparent);}
+  .theme-btn:focus-visible{outline:3px solid var(--primary);outline-offset:1px;}
+
+  /* ==========================================================================
+     4. メインコンテンツ & 検索バー
+     ========================================================================== */
+  .content{flex:1;min-width:0;max-width:860px;padding:1.5rem 2rem 4.5rem;}
+
+  .searchbar{
+    position:relative;display:flex;align-items:center;
+    height:56px;border-radius:28px;background:var(--sc-high);padding:0 .5rem 0 1rem;gap:.5rem;
+    margin-bottom:1.1rem;
+  }
+  .searchbar:focus-within{outline:3px solid var(--primary);outline-offset:0;}
+  .searchbar svg{color:var(--on-surface-variant);flex-shrink:0;}
+  .searchbar input{
+    flex:1;min-width:0;height:100%;border:0;background:transparent;color:var(--on-surface);
+    font-family:inherit;font-size:16px;letter-spacing:.5px;
+  }
+  .searchbar input:focus{outline:none;}
+  .searchbar input::placeholder{color:var(--on-surface-variant);}
+  .clear{
+    all:unset;box-sizing:border-box;cursor:pointer;width:40px;height:40px;border-radius:50%;
+    display:none;align-items:center;justify-content:center;color:var(--on-surface-variant);
+  }
+  .clear.show{display:flex;}
+  .clear:hover{background:color-mix(in srgb,var(--on-surface-variant) 10%,transparent);}
+  .clear:focus-visible{outline:3px solid var(--primary);outline-offset:0;}
+
+  .status{font-size:14px;color:var(--on-surface-variant);margin:0 0 1rem .5rem;}
+
+  /* ==========================================================================
+     5. セクション & ポータルカード（ツールグリッド / 資料リスト）
+     ========================================================================== */
+  .section{margin-bottom:1.75rem;}
+  .section-head{
+    display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+    margin:0 .25rem .75rem;
+  }
+  .section-title{
+    margin:0;font-size:14px;font-weight:500;color:var(--on-surface-variant);
+    letter-spacing:.1px;
+  }
+  .section-count{
+    font-size:12px;font-weight:500;color:var(--on-surface-variant);
+    font-variant-numeric:tabular-nums;
   }
 
-  .board-frame {
-    position: relative;
-    width: min(100%, 880px);
-    background: linear-gradient(160deg, #3d3d3d, #1c1c1c 58%, #0f0f0f);
-    border-radius: 10px;
-    padding: 22px;
-    box-shadow: 0 24px 50px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
+  /* グループ1: 業務・計算ツール（2列〜3列レスポンシブグリッド） */
+  .tools-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:.75rem;
+  }
+  @media (min-width:600px){
+    .tools-grid{
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
   }
 
-  .screw {
-    position: absolute;
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #6f6f6f, #202020 70%);
+  .tool-card{
+    position:relative;
+    display:flex;flex-direction:column;justify-content:space-between;
+    min-height:132px;padding:1rem 1.15rem;
+    border-radius:16px;
+    background:var(--sc-low);
+    color:var(--on-surface);
+    border:1px solid transparent;
+    overflow:hidden;
   }
-  .screw.tl { top: 10px; left: 10px; }
-  .screw.tr { top: 10px; right: 10px; }
-  .screw.bl { bottom: 10px; left: 10px; }
-  .screw.br { bottom: 10px; right: 10px; }
+  .tool-card:hover{background:var(--sc);}
+  .tool-card:active{background:var(--sc-high);}
 
-  .screen {
-    position: relative;
-    background: #060503;
-    border-radius: 3px;
-    overflow: hidden;
-    padding: 4px;
-    box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 3px rgba(255,180,63,0.15);
-    animation: screen-hum 9s linear infinite;
+  /* 最上部 緊急時強調カード: 店舗ハザードマップ */
+  .emergency-card{
+    position:relative;
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    width:100%;min-height:104px;
+    padding:1.15rem 1.25rem;
+    border-radius:16px;
+    background:var(--tertiary-container);
+    color:var(--on-tertiary-container);
+    border:1px solid transparent;
+    overflow:hidden;
   }
-
-  @keyframes screen-hum {
-    0%, 100% { box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 3px rgba(255,180,63,0.14); }
-    50% { box-shadow: inset 0 0 44px rgba(0,0,0,0.85), inset 0 0 5px rgba(255,180,63,0.2); }
+  .emergency-card::after{
+    content:"";position:absolute;inset:0;border-radius:inherit;
+    background:currentColor;opacity:0;pointer-events:none;
   }
+  .emergency-card:hover::after{opacity:.08;}
+  .emergency-card:active::after{opacity:.12;}
 
-  .screen::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: radial-gradient(rgba(255,180,63,0.07) 1px, transparent 1.3px);
-    background-size: 5px 5px;
-    z-index: 1;
-  }
+  .featured-main{display:flex;align-items:center;gap:1rem;min-width:0;}
+  .featured-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin-bottom:.25rem;}
 
-  .screen::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      repeating-linear-gradient(to bottom, rgba(0,0,0,0.22) 0px, rgba(0,0,0,0.22) 1px, transparent 1px, transparent 3px),
-      radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.55) 100%);
-    z-index: 2;
+  .card-top{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;
+    margin-bottom:.85rem;
   }
 
-  /* sweeping refresh line, like a display scan */
-  .scanline {
-    position: absolute;
-    left: 0; right: 0;
-    height: 26%;
-    background: linear-gradient(to bottom, transparent, rgba(255,180,63,0.05), transparent);
-    z-index: 2;
-    pointer-events: none;
-    animation: scan-move 6s linear infinite;
+  /* アイコンコンテナ */
+  .icon-box{
+    width:40px;height:40px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    background:var(--secondary-container);color:var(--on-secondary-container);
+  }
+  .emergency-card .icon-box{
+    width:48px;height:48px;border-radius:14px;
+    background:var(--tertiary);color:var(--on-tertiary);
+  }
+  .icon-box svg{width:22px;height:22px;}
+
+  .card-title{
+    margin:0;font-size:16px;line-height:24px;font-weight:500;letter-spacing:.15px;
+    color:inherit;
+  }
+  .emergency-card .card-title{
+    font-size:17px;line-height:24px;font-weight:600;
+  }
+  .card-desc{
+    margin:.25rem 0 0;font-size:13px;line-height:20px;letter-spacing:.25px;
+    color:var(--on-surface-variant);
+  }
+  .emergency-card .card-desc{
+    color:var(--on-tertiary-container);opacity:.88;
   }
 
-  @keyframes scan-move {
-    from { top: -30%; }
-    to { top: 130%; }
+  .card-arrow{
+    width:20px;height:20px;flex-shrink:0;
+    color:var(--on-surface-variant);opacity:.75;
+  }
+  .emergency-card .card-arrow{color:var(--on-tertiary-container);opacity:.9;}
+
+  /* グループ2: 制度・資料（フル幅リストカード） */
+  .docs-list{display:flex;flex-direction:column;gap:.75rem;}
+
+  .doc-card{
+    display:flex;align-items:center;gap:1rem;
+    padding:1rem 1.25rem;
+    border-radius:16px;
+    background:var(--sc-low);
+    color:var(--on-surface);
+    border:1px solid transparent;
+  }
+  .doc-card:hover{background:var(--sc);}
+  .doc-card:active{background:var(--sc-high);}
+
+  /* 最下部 店舗別セクション（控えめなリストカード） */
+  .store-card{
+    display:flex;align-items:center;gap:.9rem;
+    padding:.85rem 1.15rem;
+    border-radius:14px;
+    background:transparent;
+    color:var(--on-surface);
+    border:1px solid var(--outline-variant);
+  }
+  .store-card:hover{background:var(--sc-low);}
+  .store-card:active{background:var(--sc);}
+  .store-card .icon-box{
+    width:36px;height:36px;border-radius:10px;
+    background:var(--sc-high);color:var(--on-surface-variant);
+  }
+  .store-card .icon-box svg{width:19px;height:19px;}
+  .store-card .card-title{font-size:15px;line-height:22px;}
+
+  .store-card.is-soon{cursor:default;border-style:dashed;}
+  .store-card.is-soon:hover,.store-card.is-soon:active{background:transparent;}
+  .store-card.is-soon .icon-box,.store-card.is-soon .card-title,.store-card.is-soon .card-desc{opacity:.6;}
+  .chip.soon-badge{background:transparent;color:var(--on-surface-variant);border:1px dashed var(--outline);}
+  .doc-body{flex:1;min-width:0;}
+  .doc-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.45rem;margin-bottom:.35rem;}
+  .store-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;}
+
+  /* チップ（draft_j_material3.html と統一） */
+  .chip{
+    display:inline-flex;align-items:center;height:24px;padding:0 .55rem;border-radius:8px;
+    font-size:12px;font-weight:500;letter-spacing:.5px;white-space:nowrap;
+  }
+  .chip.t1{background:var(--t1);color:var(--on-t1);}
+  .chip.t2{background:var(--t2);color:var(--on-t2);}
+  .chip.t3{background:var(--t3);color:var(--on-t3);}
+  .chip.t4{background:var(--t4);color:var(--on-t4);}
+  .chip.t5{background:var(--t5);color:var(--on-t5);}
+  .chip.t6{background:var(--t6);color:var(--on-t6);}
+  .chip.emergency-badge{
+    background:var(--tertiary);color:var(--on-tertiary);
+  }
+  .chip.store-badge{
+    background:var(--sc-high);color:var(--on-surface-variant);
   }
 
-  .marquee {
-    position: relative;
-    z-index: 3;
-    overflow: hidden;
-    border-bottom: 1px solid rgba(255,180,63,0.22);
-    padding: 8px 0;
+  mark{background:var(--highlight);color:var(--on-highlight);border-radius:4px;padding:0 .1em;}
+  .empty{text-align:center;color:var(--on-surface-variant);padding:4rem 0;font-size:16px;}
+
+  /* ==========================================================================
+     6. Material 3 Snackbar（リンク未設定時のフィードバック）
+     ========================================================================== */
+  .snackbar{
+    position:fixed;left:50%;bottom:1.25rem;z-index:100;
+    transform:translateX(-50%) translateY(16px);
+    opacity:0;pointer-events:none;
+    width:min(calc(100% - 2rem),460px);
+    display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+    padding:.85rem 1rem;border-radius:12px;
+    background:var(--inverse-surface);color:var(--inverse-on-surface);
+    font-size:14px;line-height:1.45;letter-spacing:.25px;
+    box-shadow:0 4px 12px rgba(0,0,0,.22);
+  }
+  .snackbar.show{
+    opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto;
+  }
+  .snackbar-close{
+    all:unset;box-sizing:border-box;cursor:pointer;
+    padding:.25rem .5rem;border-radius:8px;font-size:13px;font-weight:500;
+    color:var(--primary-container);white-space:nowrap;
+  }
+  html[data-theme="dark"] .snackbar-close{color:var(--primary);}
+  @media (prefers-color-scheme: dark){
+    html:not([data-theme="light"]) .snackbar-close{color:var(--primary);}
   }
 
-  .marquee-track {
-    display: inline-block;
-    white-space: nowrap;
-    color: var(--amber);
-    font-family: 'VT323', monospace;
-    font-size: 19px;
-    letter-spacing: 0.08em;
-    text-shadow: 0 0 6px var(--amber-glow);
-    padding-left: 100%;
-    animation: scroll-left 16s linear infinite;
+  /* ==========================================================================
+     7. モバイル対応（<= 840px: ドロワー → 上部のフィルターチップ）
+     ========================================================================== */
+  @media (max-width:840px){
+    .layout{flex-direction:column;}
+    .drawer{
+      width:100%;height:auto;position:static;border-radius:0 0 16px 16px;
+      padding:.9rem .9rem .7rem;
+    }
+    .drawer .brand{width:min(100%,200px);margin:.1rem .1rem .45rem;}
+    .drawer .brand-sub{margin:0 .1rem .5rem;}
+    .drawer-heading{margin:.5rem .1rem .3rem;}
+    .drawer-list{flex-direction:row;overflow-x:auto;gap:.5rem;padding-bottom:.15rem;scrollbar-width:none;}
+    .drawer-list::-webkit-scrollbar{display:none;}
+    .nav-item{
+      flex-shrink:0;white-space:nowrap;min-height:32px;padding:0 .75rem;border-radius:8px;
+      border:1px solid var(--outline);color:var(--on-surface-variant);
+    }
+    .nav-item[aria-pressed="true"]{border-color:transparent;}
+    .nav-item .n{display:none;}
+    .theme-btn{margin:.4rem 0 0;}
+    .content{padding:1rem .9rem 4rem;}
+    .tool-card{padding:.9rem;min-height:124px;}
+    .emergency-card{padding:1rem;}
+    .card-title{font-size:15px;line-height:22px;}
+    .doc-card{padding:.95rem 1rem;}
+    .store-card{padding:.8rem .95rem;}
   }
 
-  @keyframes scroll-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100%); }
-  }
-
-  .table-head {
-    position: relative;
-    z-index: 3;
-    display: grid;
-    grid-template-columns: 78px 1fr 150px 26px;
-    padding: 10px 14px 8px;
-    font-family: 'VT323', monospace;
-    font-size: 15px;
-    letter-spacing: 0.18em;
-    color: rgba(255,180,63,0.45);
-  }
-
-  .board-table {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    flex-direction: column;
-    padding: 0 4px 6px;
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: 78px 1fr 150px 26px;
-    align-items: center;
-    padding: 12px 14px;
-    text-decoration: none;
-    border-top: 1px solid rgba(255,180,63,0.12);
-    color: var(--amber);
-    transition: background 100ms steps(2, end);
-    opacity: 0;
-    animation: row-boot 240ms steps(4, end) forwards;
-    animation-delay: var(--d);
-  }
-
-  @keyframes row-boot {
-    0% { opacity: 0; }
-    40% { opacity: 1; }
-    55% { opacity: 0.3; }
-    100% { opacity: 1; }
-  }
-
-  .row:last-child { border-bottom: 1px solid rgba(255,180,63,0.12); }
-
-  .cell { text-shadow: 0 0 6px rgba(255,180,63,0.55); }
-
-  .cell-code {
-    font-family: 'VT323', monospace;
-    font-size: 20px;
-    letter-spacing: 0.08em;
-    color: var(--amber-hi);
-  }
-
-  .cell-name { font-size: 17px; letter-spacing: 0.02em; }
-
-  .cell-status {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 7px;
-    font-family: 'VT323', monospace;
-    font-size: 16px;
-    letter-spacing: 0.1em;
-    color: rgba(255,180,63,0.7);
-  }
-
-  .led-dot {
-    width: 6px; height: 6px;
-    background: var(--amber);
-    box-shadow: 0 0 6px var(--amber-glow);
-    animation: blink 2000ms steps(1, end) infinite;
-  }
-
-  @keyframes blink {
-    0%, 60% { opacity: 1; }
-    65%, 95% { opacity: 0.25; }
-    100% { opacity: 1; }
-  }
-
-  .cell-arrow {
-    font-size: 12px;
-    text-align: right;
-    opacity: 0;
-    transform: translateX(-4px);
-    transition: opacity 100ms steps(2,end), transform 100ms steps(2,end);
-  }
-
-  .row:hover, .row:focus-visible {
-    background: rgba(255,180,63,0.09);
-    outline: none;
-  }
-  .row:hover .cell, .row:focus-visible .cell { text-shadow: 0 0 10px rgba(255,180,63,0.95); }
-  .row:hover .cell-arrow, .row:focus-visible .cell-arrow { opacity: 1; transform: translateX(0); }
-  .row:focus-visible { box-shadow: inset 0 0 0 1px rgba(255,180,63,0.6); }
-
-  .row--empty { color: rgba(255,180,63,0.28); cursor: default; }
-  .row--empty .cell { text-shadow: none; }
-  .row--empty .cell-status { color: rgba(255,180,63,0.28); }
-
-  .board-footer {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 14px 4px;
-    font-family: 'VT323', monospace;
-    font-size: 14px;
-    letter-spacing: 0.1em;
-    color: rgba(255,180,63,0.45);
-  }
-
-  .clock { color: rgba(255,180,63,0.8); text-shadow: 0 0 5px rgba(255,180,63,0.4); }
-  .clock .colon { animation: blink 1000ms steps(1, end) infinite; }
-
-  @media (max-width: 560px) {
-    body { padding-top: clamp(110px, 26vw, 150px); }
-    .table-head { display: none; }
-    .row { grid-template-columns: 60px 1fr; }
-    .cell-status { grid-column: 1 / 2; justify-content: flex-start; font-size: 13px; opacity: 0.75; }
-    .cell-arrow { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track, .logo, .scanline, .led-dot, .screen, .clock .colon { animation: none; }
-    .row { animation: none; opacity: 1; }
+  @media (prefers-reduced-motion:no-preference){
+    .tool-card,.emergency-card,.doc-card,.store-card,.nav-item,.theme-btn,.snackbar,.emergency-card::after{
+      transition:background-color .15s ease,opacity .18s ease,transform .18s ease;
+    }
   }
 </style>
 </head>
 <body>
-  <img class="logo" src="data:image/png;base64,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" alt="Standford" />
+<div class="layout">
+  <!-- ===== ナビゲーションドロワー ===== -->
+  <nav class="drawer" aria-label="カテゴリ絞り込み">
+    <p class="brand" role="img" aria-label="Standford"></p>
+    <p class="brand-sub">いざという時にだいたいないものを</p>
 
-  <div class="board-frame">
-    <span class="screw tl"></span><span class="screw tr"></span><span class="screw bl"></span><span class="screw br"></span>
-    <div class="screen">
-      <span class="scanline" aria-hidden="true"></span>
-      <div class="marquee" aria-hidden="true">
-        <span class="marquee-track">STANDFORD SYSTEM ONLINE　・　全ツール正常稼働中　・　STANDFORD SYSTEM ONLINE　・　全ツール正常稼働中　・　</span>
-      </div>
+    <p class="drawer-heading" id="h-cat">カテゴリ</p>
+    <div class="drawer-list" id="catList" role="group" aria-labelledby="h-cat"></div>
 
-      <div class="table-head" aria-hidden="true">
-        <span>CODE</span><span>TOOL</span><span style="text-align:right;">STATUS</span><span></span>
-      </div>
+    <button class="theme-btn" id="themeToggle" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16V5a7 7 0 010 14z"/></svg>
+      <span id="themeLabel">外観: 自動</span>
+    </button>
+  </nav>
 
-      <nav class="board-table" aria-label="店舗ツール">
-
-        <a class="row" href="https://script.google.com/macros/s/AKfycbxcf7Z81gVdx8jFYTlRv1Yy9ZmRXgCUmRgIoL3l9VdX37hVTyzhv_Vej1PU4wkpwyBEuw/exec" style="--d:350ms" aria-label="医薬品出庫量を開く">
-          <span class="cell cell-code">ST-01</span>
-          <span class="cell cell-name">医薬品出庫量</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <a class="row" href="https://script.google.com/macros/s/AKfycbwhZMbws9yuZoOMJ-T7J_t-0gQbt-loNYAmI6eZOAAVvPVYNbHEgHNEbZckFD4jQvGXEQ/exec" style="--d:520ms" aria-label="小児薬用量(シロップ)を開く">
-          <span class="cell cell-code">ST-02</span>
-          <span class="cell cell-name">小児薬用量(シロップ)</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <a class="row" href="https://script.google.com/macros/s/AKfycbzBSD6VBBcfFsHqqocavI2tDx73OVRDImykhUzhiakp/dev" style="--d:690ms" aria-label="外国語版薬剤情報提供書を開く">
-          <span class="cell cell-code">ST-03</span>
-          <span class="cell cell-name">外国語版薬剤情報提供書</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <a class="row" href="https://ogaflame.github.io/datedatedate/" style="--d:860ms" aria-label="投与日数計算を開く">
-          <span class="cell cell-code">ST-04</span>
-          <span class="cell cell-name">投与日数計算</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <a class="row" href="https://ogaflame.github.io/pharmacy-info/" style="--d:1030ms" aria-label="調剤報酬改定を開く">
-          <span class="cell cell-code">ST-05</span>
-          <span class="cell cell-name">調剤報酬改定</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <a class="row" href="https://ogaflame.github.io/Gigikaikaisyaku/" style="--d:1200ms" aria-label="疑義解釈資料データベースを開く">
-          <span class="cell cell-code">ST-06</span>
-          <span class="cell cell-name">疑義解釈資料データベース</span>
-          <span class="cell cell-status"><span class="led-dot"></span>READY</span>
-          <span class="cell cell-arrow" aria-hidden="true">&#9654;</span>
-        </a>
-
-        <div class="row row--empty" style="--d:1370ms" aria-hidden="true">
-          <span class="cell cell-code">ST-07</span>
-          <span class="cell cell-name">----------</span>
-          <span class="cell cell-status">COMING SOON</span>
-          <span class="cell cell-arrow"></span>
-        </div>
-      </nav>
-
-      <div class="board-footer">
-        <span>STANDFORD / 店舗ツール</span>
-        <span class="clock" id="clock">--<span class="colon">:</span>--<span class="colon">:</span>--</span>
-      </div>
+  <!-- ===== メインコンテンツ ===== -->
+  <main class="content">
+    <div class="searchbar" role="search">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M15 15l5.5 5.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="q" placeholder="ツール・資料名で検索" aria-label="ツール・資料名で検索" autocomplete="off">
+      <button class="clear" id="clearBtn" type="button" aria-label="検索語を消去">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M19 6.4L17.6 5 12 10.6 6.4 5 5 6.4 10.6 12 5 17.6 6.4 19 12 13.4 17.6 19 19 17.6 13.4 12z"/>
+        </svg>
+      </button>
     </div>
-  </div>
 
-  <script>
-    function tick() {
-      var d = new Date();
-      var p = function (n) { return String(n).padStart(2, "0"); };
-      var el = document.getElementById("clock");
-      if (el) el.innerHTML = p(d.getHours()) + '<span class="colon">:</span>' + p(d.getMinutes()) + '<span class="colon">:</span>' + p(d.getSeconds());
-    }
-    tick();
-    setInterval(tick, 1000);
-  </script>
+    <p class="status" id="status" aria-live="polite"></p>
+    <div id="portal"></div>
+  </main>
+</div>
+
+<!-- ===== Material 3 Snackbar ===== -->
+<div class="snackbar" id="snackbar" role="status" aria-live="polite">
+  <span id="snackbarMsg"></span>
+  <button type="button" class="snackbar-close" id="snackbarClose">閉じる</button>
+</div>
+
+<script>
+/* ==========================================================================
+   1. ポータル項目データ（URLの設定・項目の追加はここを編集）
+   ========================================================================== */
+const ITEMS = [
+  // --- 1. 防災・緊急（最上部・横幅いっぱいの強調カード） ---
+  {
+    id: 'hazard-map',
+    title: '店舗ハザードマップ',
+    badge: '緊急時確認',
+    category: '防災・緊急',
+    description: '周辺地域の浸水・土砂災害リスクおよび避難場所の確認',
+    tone: 'tertiary',
+    icon: 'map',
+    featured: true,
+    url: 'https://ogaflame.github.io/HazardMap/'
+  },
+
+  // --- 2. 業務・計算ツール（2列〜3列グリッド） ---
+  {
+    id: 'days-calc',
+    title: '投与日数計算',
+    category: '業務・計算ツール',
+    description: '往診時の臨時処方、いつまでつなげるかの確認',
+    tone: 3,
+    icon: 'calendar',
+    url: 'https://ogaflame.github.io/datedatedate/'
+  },
+  {
+    id: 'pediatric-dose',
+    title: '小児投与量計算',
+    category: '業務・計算ツール',
+    description: '体重・年齢別の用量算出',
+    tone: 3,
+    icon: 'calculator',
+    url: 'https://script.google.com/macros/s/AKfycbwhZMbws9yuZoOMJ-T7J_t-0gQbt-loNYAmI6eZOAAVvPVYNbHEgHNEbZckFD4jQvGXEQ/exec'
+  },
+  {
+    id: 'otc-sim',
+    title: 'OTC類似薬 ざっくりシミュレーター',
+    category: '業務・計算ツール',
+    description: '一部保険外療養の負担額をざっくり試算',
+    tone: 4,
+    icon: 'sim',
+    url: 'https://ogaflame.github.io/OTCluiji/'
+  },
+
+  // --- 3. 制度・資料（横長スリムリストカード） ---
+  {
+    id: 'revision-summary',
+    title: '調剤報酬改定まとめ',
+    chip: '令和8年度',
+    category: '制度・資料',
+    description: '改定のポイント・算定要件の整理',
+    tone: 2,
+    icon: 'doc',
+    url: 'https://ogaflame.github.io/pharmacy-info/'
+  },
+  {
+    id: 'gikai-db',
+    title: '疑義解釈資料',
+    chip: 'データベース',
+    category: '制度・資料',
+    description: '疑義解釈Q&Aの検索・原文PDF参照',
+    tone: 1,
+    icon: 'qa',
+    url: 'https://ogaflame.github.io/Gigikaikaisyaku/'
+  },
+  {
+    id: 'betsu-3',
+    title: '別添３',
+    chip: '資料',
+    category: '制度・資料',
+    description: '調剤報酬点数表・別添３の参照',
+    tone: 2,
+    icon: 'clip',
+    url: 'https://ogaflame.github.io/bettenn-three/'
+  },
+  {
+    id: 'medical-stats',
+    title: '医療統計ボード',
+    chip: '統計',
+    category: '制度・資料',
+    description: '医療全体の統計データを確認',
+    tone: 3,
+    icon: 'chart',
+    url: 'https://ogaflame.github.io/pharma-stats-board/'
+  },
+
+  // --- 4. 店舗別（最下部・控えめなリストカード） ---
+  {
+    id: 'inventory-tachikawa',
+    title: '店舗在庫【立川南口店】',
+    displayTitle: '店舗在庫',
+    sub: '立川南口店',
+    category: '店舗別',
+    description: '立川南口店内の医薬品在庫を確認',
+    tone: 5,
+    icon: 'inventory',
+    url: 'https://script.google.com/macros/s/AKfycbxcf7Z81gVdx8jFYTlRv1Yy9ZmRXgCUmRgIoL3l9VdX37hVTyzhv_Vej1PU4wkpwyBEuw/exec'
+  },
+  {
+    id: 'foreign-drug-info-tachikawa',
+    title: '外国語版薬剤情報提供書【立川南口店】',
+    displayTitle: '外国語版薬剤情報提供書',
+    sub: '立川南口店',
+    category: '店舗別',
+    description: '外国語での薬剤情報提供書発行',
+    tone: 5,
+    icon: 'globe',
+    soon: true,
+    url: ''
+  }
+];
+
+const CATEGORIES = [
+  { name: '防災・緊急', swatchColor: 'var(--tertiary)' },
+  { name: '業務・計算ツール', swatchColor: 'var(--t4)' },
+  { name: '制度・資料', swatchColor: 'var(--t2)' },
+  { name: '店舗別', swatchColor: 'var(--outline)' }
+];
+
+/* ==========================================================================
+   2. 状態管理・ユーティリティ関数・SVGアイコン定義
+   ========================================================================== */
+let activeCat = null;
+
+function esc(s){
+  return String(s ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+function hl(text, terms){
+  let t = esc(text);
+  terms.forEach(term => {
+    if(!term) return;
+    const re = new RegExp(esc(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    t = t.replace(re, m => `<mark>${m}</mark>`);
+  });
+  return t;
+}
+
+const ICONS = {
+  map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+  calculator: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/><line x1="12" y1="10" x2="12.01" y2="10"/><line x1="16" y1="10" x2="16.01" y2="10"/><line x1="8" y1="14" x2="8.01" y2="14"/><line x1="12" y1="14" x2="12.01" y2="14"/><line x1="16" y1="14" x2="16.01" y2="14"/><line x1="8" y1="18" x2="12" y2="18"/><line x1="16" y1="18" x2="16.01" y2="18"/></svg>',
+  doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>',
+  qa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 0 1 4.9.8c0 1.7-2.4 2.2-2.4 3.7"/><line x1="12" y1="17.5" x2="12.01" y2="17.5"/></svg>',
+  sim: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>',
+  clip: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>',
+  inventory: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
+};
+
+const ARROW_ICON = '<svg class="card-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>';
+const OPEN_ICON = '<svg class="card-arrow" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.6l-9.8 9.8 1.4 1.4L19 6.4V10h2V3h-7z"/></svg>';
+
+/* ==========================================================================
+   3. カード描画 & フィルタリング
+   ========================================================================== */
+function renderEmergencyCard(item, terms){
+  const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
+  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const iconSvg = ICONS[item.icon] || ICONS.map;
+  const badgeHtml = item.badge ? `<span class="chip emergency-badge">${hl(item.badge, terms)}</span>` : '';
+
+  return `
+    <a class="emergency-card js-item-link" href="${esc(item.url)}" data-title="${esc(item.title)}"${targetAttr}>
+      <div class="featured-main">
+        <span class="icon-box">${iconSvg}</span>
+        <div>
+          <div class="featured-meta">
+            ${badgeHtml}
+            <h3 class="card-title">${hl(item.title, terms)}</h3>
+          </div>
+          <p class="card-desc">${hl(item.description, terms)}</p>
+        </div>
+      </div>
+      ${isExternal ? OPEN_ICON : ARROW_ICON}
+    </a>`;
+}
+
+function renderToolCard(item, terms){
+  const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
+  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const iconSvg = ICONS[item.icon] || ICONS.doc;
+
+  return `
+    <a class="tool-card js-item-link" href="${esc(item.url)}" data-title="${esc(item.title)}"${targetAttr}>
+      <div class="card-top">
+        <span class="icon-box">${iconSvg}</span>
+        ${isExternal ? OPEN_ICON : ARROW_ICON}
+      </div>
+      <div>
+        <h3 class="card-title">${hl(item.title, terms)}</h3>
+        <p class="card-desc">${hl(item.description, terms)}</p>
+      </div>
+    </a>`;
+}
+
+function renderDocCard(item, terms){
+  const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
+  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const iconSvg = ICONS[item.icon] || ICONS.doc;
+  const chipHtml = item.chip ? `<span class="chip t${item.tone}">${hl(item.chip, terms)}</span>` : '';
+
+  return `
+    <a class="doc-card js-item-link" href="${esc(item.url)}" data-title="${esc(item.title)}"${targetAttr}>
+      <span class="icon-box">${iconSvg}</span>
+      <div class="doc-body">
+        <div class="doc-meta">
+          ${chipHtml}
+          <h3 class="card-title">${hl(item.title, terms)}</h3>
+        </div>
+        <p class="card-desc">${hl(item.description, terms)}</p>
+      </div>
+      ${isExternal ? OPEN_ICON : ARROW_ICON}
+    </a>`;
+}
+
+function renderStoreCard(item, terms){
+  if(item.soon){
+    const icon = ICONS[item.icon] || ICONS.inventory;
+    const sub = item.sub ? `<span class="chip store-badge">${hl(item.sub, terms)}</span>` : '';
+    return `
+    <div class="store-card is-soon" aria-disabled="true">
+      <span class="icon-box">${icon}</span>
+      <div class="doc-body">
+        <div class="store-meta">
+          <h3 class="card-title">${hl(item.displayTitle || item.title, terms)}</h3>
+          ${sub}
+          <span class="chip soon-badge">Under construction</span>
+        </div>
+        <p class="card-desc">${hl(item.description, terms)}</p>
+      </div>
+    </div>`;
+  }
+  const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
+  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const iconSvg = ICONS[item.icon] || ICONS.inventory;
+  const titleHtml = hl(item.displayTitle || item.title, terms);
+  const subHtml = item.sub ? `<span class="chip store-badge">${hl(item.sub, terms)}</span>` : '';
+
+  return `
+    <a class="store-card js-item-link" href="${esc(item.url)}" data-title="${esc(item.title)}"${targetAttr}>
+      <span class="icon-box">${iconSvg}</span>
+      <div class="doc-body">
+        <div class="store-meta">
+          <h3 class="card-title">${titleHtml}</h3>
+          ${subHtml}
+        </div>
+        <p class="card-desc">${hl(item.description, terms)}</p>
+      </div>
+      ${isExternal ? OPEN_ICON : ARROW_ICON}
+    </a>`;
+}
+
+function render(){
+  const qEl = document.getElementById('q');
+  document.getElementById('clearBtn').classList.toggle('show', qEl.value.length > 0);
+  const terms = qEl.value.trim().split(/\s+/).filter(Boolean);
+
+  const filtered = ITEMS.filter(item => {
+    if(activeCat !== null && item.category !== activeCat) return false;
+    if(!terms.length) return true;
+    const hay = [item.title, item.displayTitle, item.sub, item.badge, item.chip, item.category, item.description]
+      .filter(Boolean).join(' ').toLowerCase();
+    return terms.every(t => hay.includes(t.toLowerCase()));
+  });
+
+  document.getElementById('status').textContent = `${filtered.length} 件 (全 ${ITEMS.length} 件)`;
+  const container = document.getElementById('portal');
+
+  if(!filtered.length){
+    container.innerHTML = '<div class="empty">該当するツール・資料がありません</div>';
+    return;
+  }
+
+  const emergency = filtered.filter(i => i.category === '防災・緊急');
+  const tools = filtered.filter(i => i.category === '業務・計算ツール');
+  const docs = filtered.filter(i => i.category === '制度・資料');
+  const stores = filtered.filter(i => i.category === '店舗別');
+  let html = '';
+
+  if(emergency.length){
+    html += `
+      <section class="section" aria-labelledby="sec-emergency">
+        <div class="section-head">
+          <h2 class="section-title" id="sec-emergency">防災・緊急</h2>
+          <span class="section-count">${emergency.length} 件</span>
+        </div>
+        <div class="docs-list">
+          ${emergency.map(item => renderEmergencyCard(item, terms)).join('')}
+        </div>
+      </section>`;
+  }
+
+  if(tools.length){
+    html += `
+      <section class="section" aria-labelledby="sec-tools">
+        <div class="section-head">
+          <h2 class="section-title" id="sec-tools">業務・計算ツール</h2>
+          <span class="section-count">${tools.length} 件</span>
+        </div>
+        <div class="tools-grid">
+          ${tools.map(item => renderToolCard(item, terms)).join('')}
+        </div>
+      </section>`;
+  }
+
+  if(docs.length){
+    html += `
+      <section class="section" aria-labelledby="sec-docs">
+        <div class="section-head">
+          <h2 class="section-title" id="sec-docs">制度・資料</h2>
+          <span class="section-count">${docs.length} 件</span>
+        </div>
+        <div class="docs-list">
+          ${docs.map(item => renderDocCard(item, terms)).join('')}
+        </div>
+      </section>`;
+  }
+
+  if(stores.length){
+    html += `
+      <section class="section" aria-labelledby="sec-stores">
+        <div class="section-head">
+          <h2 class="section-title" id="sec-stores">店舗別</h2>
+          <span class="section-count">${stores.length} 件</span>
+        </div>
+        <div class="docs-list">
+          ${stores.map(item => renderStoreCard(item, terms)).join('')}
+        </div>
+      </section>`;
+  }
+
+  container.innerHTML = html;
+}
+
+/* ==========================================================================
+   4. カテゴリナビゲーション構築
+   ========================================================================== */
+function addNavItem(list, label, count, value, swatchColor){
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'nav-item';
+  btn.setAttribute('aria-pressed', value === null ? 'true' : 'false');
+  btn.innerHTML = `
+    <span class="lead">
+      ${swatchColor ? `<span class="swatch" style="background:${swatchColor}"></span>` : ''}
+      <span>${esc(label)}</span>
+    </span>
+    <span class="n">${count}</span>`;
+  btn.addEventListener('click', () => {
+    activeCat = value;
+    [...list.children].forEach(el => el.setAttribute('aria-pressed', el === btn ? 'true' : 'false'));
+    render();
+  });
+  list.appendChild(btn);
+}
+
+function buildNav(){
+  const catList = document.getElementById('catList');
+  addNavItem(catList, 'すべて', ITEMS.length, null, null);
+  CATEGORIES.forEach(cat => {
+    const count = ITEMS.filter(i => i.category === cat.name).length;
+    addNavItem(catList, cat.name, count, cat.name, cat.swatchColor);
+  });
+}
+
+/* ==========================================================================
+   5. Snackbar（リンク未設定時の案内）
+   ========================================================================== */
+let snackbarTimer = null;
+const snackbarEl = document.getElementById('snackbar');
+const snackbarMsgEl = document.getElementById('snackbarMsg');
+
+function showSnackbar(message){
+  snackbarMsgEl.textContent = message;
+  snackbarEl.classList.add('show');
+  if(snackbarTimer) clearTimeout(snackbarTimer);
+  snackbarTimer = setTimeout(() => snackbarEl.classList.remove('show'), 2800);
+}
+
+document.getElementById('snackbarClose').addEventListener('click', () => {
+  snackbarEl.classList.remove('show');
+  if(snackbarTimer) clearTimeout(snackbarTimer);
+});
+
+document.getElementById('portal').addEventListener('click', e => {
+  const link = e.target.closest('.js-item-link');
+  if(!link) return;
+  if(link.getAttribute('href') === '#'){
+    e.preventDefault();
+    const title = link.dataset.title || '';
+    showSnackbar(`「${title}」のリンク先（URLを設定してください）`);
+  }
+});
+
+/* ==========================================================================
+   6. 検索 & 外観テーマ切替（draft_j_material3.html と共通キー gikai_theme）
+   ========================================================================== */
+document.getElementById('q').addEventListener('input', render);
+document.getElementById('clearBtn').addEventListener('click', () => {
+  const q = document.getElementById('q');
+  q.value = '';
+  render();
+  q.focus();
+});
+
+const themeBtn = document.getElementById('themeToggle');
+const themeLabel = document.getElementById('themeLabel');
+const LABEL = { auto:'外観: 自動', light:'外観: ライト', dark:'外観: ダーク' };
+
+function getMode(){
+  try { return localStorage.getItem('gikai_theme') || 'auto'; }
+  catch(e){ return 'auto'; }
+}
+function setMode(m){
+  try { m === 'auto' ? localStorage.removeItem('gikai_theme') : localStorage.setItem('gikai_theme', m); }
+  catch(e){}
+}
+function applyTheme(){
+  const m = getMode();
+  if(m === 'auto') document.documentElement.removeAttribute('data-theme');
+  else document.documentElement.setAttribute('data-theme', m);
+  themeLabel.textContent = LABEL[m];
+}
+
+themeBtn.addEventListener('click', () => {
+  setMode({ auto:'light', light:'dark', dark:'auto' }[getMode()]);
+  applyTheme();
+});
+
+// 初期化
+applyTheme();
+buildNav();
+render();
+</script>
 </body>
 </html>
