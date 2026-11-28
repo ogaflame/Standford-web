@@ -516,7 +516,7 @@ const OPEN_ICON = '<svg class="card-arrow" viewBox="0 0 24 24" fill="currentColo
    ========================================================================== */
 function renderEmergencyCard(item, terms){
   const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
-  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const targetAttr = ''; // 同じタブで開く（スマホで戻るボタンが使えるように）
   const iconSvg = ICONS[item.icon] || ICONS.map;
   const badgeHtml = item.badge ? `<span class="chip emergency-badge">${hl(item.badge, terms)}</span>` : '';
 
@@ -532,20 +532,20 @@ function renderEmergencyCard(item, terms){
           <p class="card-desc">${hl(item.description, terms)}</p>
         </div>
       </div>
-      ${isExternal ? OPEN_ICON : ARROW_ICON}
+      ${ARROW_ICON}
     </a>`;
 }
 
 function renderToolCard(item, terms){
   const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
-  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const targetAttr = ''; // 同じタブで開く（スマホで戻るボタンが使えるように）
   const iconSvg = ICONS[item.icon] || ICONS.doc;
 
   return `
     <a class="tool-card js-item-link" href="${esc(item.url)}" data-title="${esc(item.title)}"${targetAttr}>
       <div class="card-top">
         <span class="icon-box">${iconSvg}</span>
-        ${isExternal ? OPEN_ICON : ARROW_ICON}
+        ${ARROW_ICON}
       </div>
       <div>
         <h3 class="card-title">${hl(item.title, terms)}</h3>
@@ -556,7 +556,7 @@ function renderToolCard(item, terms){
 
 function renderDocCard(item, terms){
   const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
-  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const targetAttr = ''; // 同じタブで開く（スマホで戻るボタンが使えるように）
   const iconSvg = ICONS[item.icon] || ICONS.doc;
   const chipHtml = item.chip ? `<span class="chip t${item.tone}">${hl(item.chip, terms)}</span>` : '';
 
@@ -570,7 +570,7 @@ function renderDocCard(item, terms){
         </div>
         <p class="card-desc">${hl(item.description, terms)}</p>
       </div>
-      ${isExternal ? OPEN_ICON : ARROW_ICON}
+      ${ARROW_ICON}
     </a>`;
 }
 
@@ -592,7 +592,7 @@ function renderStoreCard(item, terms){
     </div>`;
   }
   const isExternal = item.url && item.url !== '#' && /^https?:\/\//.test(item.url);
-  const targetAttr = isExternal ? ' target="_blank" rel="noopener"' : '';
+  const targetAttr = ''; // 同じタブで開く（スマホで戻るボタンが使えるように）
   const iconSvg = ICONS[item.icon] || ICONS.inventory;
   const titleHtml = hl(item.displayTitle || item.title, terms);
   const subHtml = item.sub ? `<span class="chip store-badge">${hl(item.sub, terms)}</span>` : '';
@@ -607,7 +607,7 @@ function renderStoreCard(item, terms){
         </div>
         <p class="card-desc">${hl(item.description, terms)}</p>
       </div>
-      ${isExternal ? OPEN_ICON : ARROW_ICON}
+      ${ARROW_ICON}
     </a>`;
 }
 
